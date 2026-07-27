@@ -1,41 +1,43 @@
-# apps.yaml schema
+# apps.json schema
 
-YAML (not JSON) — this file is meant to be hand-edited by Frederico when
-adding/curating marketplace apps. Structural schema lives in
-`schemas/apps.schema.json`; validated by `tests/validate_apps.py`.
+JSON — kept field-name-consistent with the apps' own `aw-app.json` manifest
+(`manifest_version`, `id`, `name`, `description`, `version`; see the
+[Decoupled Apps Framework ADR](../../docs/knowledge_base/docs/architecture/decoupled-apps-framework.md)).
+Structural schema lives in `schemas/apps.schema.json`; validated by
+`tests/validate_apps.py`.
 
-```yaml
-version: 1            # catalog format version — bump on breaking field changes
-
-apps:
-  - id: git            # required. matches the app's own aw-app.json `id`
-    name: Git + GitHub CLI       # required. shown in the Marketplace list
-    description: >-              # required. shown in the Marketplace list
-      Installs git and the GitHub CLI...
-    repo: tekflox/aw-app-git      # required. repo path (owner/name) or full git URL
-                                    # where the app's code + aw-app.json live
-    ref: main                     # optional. tag/branch/commit to pin install to
-    version: 0.1.0                 # optional. semver pin, matched against the
-                                    # app's own aw-app.json `version`
-    icon: git-branch               # optional. icon name shown in the Marketplace list
-    category: dev-tools            # optional. grouping in the Marketplace UI
-    tags: [git, github, cli]       # optional. filter/search tags
-    has_config: true               # required. whether the app has a config/settings
-                                    # window to open right after install
-    bootstrap: true                # required. whether installing this app runs a
-                                    # bootstrap/install hook (e.g. system CLIs)
+```json
+{
+  "manifest_version": 1,
+  "apps": [
+    {
+      "id": "git",
+      "name": "Git + GitHub CLI",
+      "description": "Installs git and the GitHub CLI...",
+      "repo": "tekflox/aw-app-git",
+      "ref": "main",
+      "version": "0.1.0",
+      "icon": "git-branch",
+      "category": "dev-tools",
+      "tags": ["git", "github", "cli"],
+      "has_config": true,
+      "bootstrap": true
+    }
+  ]
+}
 ```
 
 ## Fields
 
 | Field | Required | Type | Meaning |
 |---|---|---|---|
+| `manifest_version` | yes (top-level) | integer | Catalog format version — bump on breaking field changes. |
 | `id` | yes | string, `^[a-z][a-z0-9-]{1,40}$` | Must match the app's own `aw-app.json` manifest `id` — this is the namespace key everywhere downstream (routes, tables, commands — see the ADR's Decision 8). |
 | `name` | yes | string | Display name in the Marketplace list. |
 | `description` | yes | string | Shown under the name in the Marketplace list. |
 | `repo` | yes | string | Where the app's code + `aw-app.json` live — a repo path (`owner/name`, resolved against GitHub) or a full git URL. |
 | `ref` | no | string | Tag/branch/commit to pin the install to. Defaults to the repo's default branch when omitted. |
-| `version` | no | string (semver) | Optional pin, cross-checked against the installed `aw-app.json`'s own `version` — a mismatch is a signal the catalog is stale, not necessarily a hard block. |
+| `version` | no | string (semver) | Optional pin, matched against the installed `aw-app.json`'s own `version` field — a mismatch is a signal the catalog is stale, not necessarily a hard block. |
 | `icon` | no | string | Icon identifier for the Marketplace card. |
 | `category` | no | string | Grouping/filter in the Marketplace UI (e.g. `dev-tools`). |
 | `tags` | no | list of strings | Search/filter tags. |
@@ -59,11 +61,11 @@ click → fetch → install → config-window flow.
 
 ## Validating changes
 
-After editing `apps.yaml`:
+After editing `apps.json`:
 
 ```bash
 .venv/aw/bin/python tests/validate_apps.py
 ```
 
-Checks: parses as valid YAML, matches `schemas/apps.schema.json`, no
+Checks: parses as valid JSON, matches `schemas/apps.schema.json`, no
 duplicate `id`s.

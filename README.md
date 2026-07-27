@@ -1,8 +1,9 @@
 # aw-marketplace
 
-The **apps marketplace catalog** — a single `apps.yaml` listing every app
+The **apps marketplace catalog** — a single `apps.json` listing every app
 installable from the aw-workspace "Marketplace" screen (Apps view →
-Marketplace button). This repo is the distribution SOURCE for the
+Marketplace button). JSON (not YAML) to stay field-name-consistent with the
+apps' own `aw-app.json` manifest. This repo is the distribution SOURCE for the
 [Decoupled Apps Framework ADR](../../docs/knowledge_base/docs/architecture/decoupled-apps-framework.md),
 not the runtime that installs apps — the runtime lives in `aw-workspace`
 (Phase 8 of the ADR's phased plan).
@@ -15,7 +16,7 @@ consumer, don't conflate them.
 ## How it's consumed
 
 1. User clicks **Apps → Marketplace** in the AW UI.
-2. aw-workspace fetches this repo's `apps.yaml` (git-URL-backed catalog —
+2. aw-workspace fetches this repo's `apps.json` (git-URL-backed catalog —
    feeds ADR Decision 5's `apps_catalog_cache` and the "Install My Apps"
    flow) and renders one card per `apps[]` entry (name, description, icon,
    tags) with an **Install** button.
@@ -36,10 +37,10 @@ This repo IS the git catalog that `feature:apps-marketplace-tab-git-catalog`
 
 ## Files
 
-- `apps.yaml` — the catalog. See [SCHEMA.md](SCHEMA.md) for the field
+- `apps.json` — the catalog. See [SCHEMA.md](SCHEMA.md) for the field
   reference.
-- `schemas/apps.schema.json` — JSON Schema `apps.yaml` validates against.
-- `tests/validate_apps.py` — validates `apps.yaml` against the schema +
+- `schemas/apps.schema.json` — JSON Schema `apps.json` validates against.
+- `tests/validate_apps.py` — validates `apps.json` against the schema +
   checks for duplicate `id`s: `.venv/aw/bin/python tests/validate_apps.py`.
 
 ## Seeded apps
@@ -54,5 +55,5 @@ This repo IS the git catalog that `feature:apps-marketplace-tab-git-catalog`
 
 ```
 $ .venv/aw/bin/python tests/validate_apps.py
-OK: apps.yaml is valid (2 apps: git, essentials)
+OK: apps.json is valid (2 apps: git, essentials)
 ```

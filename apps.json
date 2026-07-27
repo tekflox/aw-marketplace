@@ -1,0 +1,31 @@
+{
+  "manifest_version": 1,
+  "apps": [
+    {
+      "id": "git",
+      "name": "Git + GitHub CLI",
+      "description": "Installs git and the GitHub CLI (gh) into the workspace and provides a settings panel for gh login (token or web flow — the token is stored in the zero-knowledge secret store, never in plain config).",
+      "repo": "tekflox/aw-app-git",
+      "ref": "main",
+      "version": "0.1.0",
+      "icon": "git-branch",
+      "category": "dev-tools",
+      "tags": ["git", "github", "cli"],
+      "has_config": true,
+      "bootstrap": true
+    },
+    {
+      "id": "essentials",
+      "name": "Essential CLI Tools",
+      "description": "Installs a set of essential CLI tools into the workspace — telnet, ping, curl, nc, perl, python — and keeps them present across restarts. No login/settings/secrets, pure command install.",
+      "repo": "tekflox/aw-app-essentials",
+      "ref": "main",
+      "version": "0.1.0",
+      "icon": "terminal",
+      "category": "dev-tools",
+      "tags": ["cli", "networking", "essentials"],
+      "has_config": false,
+      "bootstrap": true
+    }
+  ]
+}

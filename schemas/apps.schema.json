@@ -1,11 +1,11 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "aw-marketplace apps.yaml",
+  "title": "aw-marketplace apps.json",
   "type": "object",
-  "required": ["version", "apps"],
+  "required": ["manifest_version", "apps"],
   "additionalProperties": false,
   "properties": {
-    "version": { "type": "integer", "const": 1 },
+    "manifest_version": { "type": "integer", "const": 1 },
     "apps": {
       "type": "array",
       "minItems": 1,
@@ -36,7 +36,7 @@
         },
         "version": {
           "type": "string",
-          "description": "Optional semver pin, matched against the app's aw-app.json version."
+          "description": "Optional semver pin, matched against the app's own aw-app.json version field."
         },
         "icon": { "type": "string" },
         "category": { "type": "string" },
