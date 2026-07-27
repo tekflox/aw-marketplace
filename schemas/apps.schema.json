@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "aw-marketplace apps.yaml",
+  "type": "object",
+  "required": ["version", "apps"],
+  "additionalProperties": false,
+  "properties": {
+    "version": { "type": "integer", "const": 1 },
+    "apps": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/definitions/app" }
+    }
+  },
+  "definitions": {
+    "app": {
+      "type": "object",
+      "required": ["id", "name", "description", "repo", "has_config", "bootstrap"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{1,40}$",
+          "description": "Must match the app's own aw-app.json manifest id."
+        },
+        "name": { "type": "string", "minLength": 1 },
+        "description": { "type": "string", "minLength": 1 },
+        "repo": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Repo path (owner/name) or full git URL where the app's code + aw-app.json live."
+        },
+        "ref": {
+          "type": "string",
+          "description": "Tag, branch, or commit to pin install to. Defaults to the repo's default branch when omitted."
+        },
+        "version": {
+          "type": "string",
+          "description": "Optional semver pin, matched against the app's aw-app.json version."
+        },
+        "icon": { "type": "string" },
+        "category": { "type": "string" },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "has_config": {
+          "type": "boolean",
+          "description": "Whether the app has a config/settings window to open post-install."
+        },
+        "bootstrap": {
+          "type": "boolean",
+          "description": "Whether installing this app runs a bootstrap/install hook."
+        }
+      }
+    }
+  }
+}
