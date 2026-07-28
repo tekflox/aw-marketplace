@@ -80,6 +80,19 @@
       "bootstrap": true
     },
     {
+      "id": "proxy",
+      "name": "AW Proxy",
+      "description": "Browser cookie proxy: the HTTP CONNECT proxy the AW Browser tunnels through, the /sync-cookies + /clear-cookies API the aw-sync browser extensions (Chrome + iOS/Safari, downloadable from the app's window) push cookies through, and encrypted persistence of chosen cookies in Postgres so they survive a proxy restart. aw-app-browser depends on this app for authentication.",
+      "repo": "tekflox/aw-app-proxy",
+      "ref": "master",
+      "version": "0.1.0",
+      "icon": "shield",
+      "category": "dev-tools",
+      "tags": ["proxy", "cookies", "browser", "cdp", "authentication"],
+      "has_config": true,
+      "bootstrap": false
+    },
+    {
       "id": "browser",
       "name": "AW Browser",
       "description": "Headless Chromium as a Tier-2 (container) app — a prebuilt ghcr.io/browserless/chromium image spawned by the workspace over the rootless podman socket, run with --shm-size=1g, its CDP endpoint reverse-proxied at /api/apps/browser/* (ws://.../json/version, driveable by Playwright/CDP clients). First real Tier-2 app; supersedes the fragile Tier-1 in-process prototype.",
