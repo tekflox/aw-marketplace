@@ -53,7 +53,7 @@ jobs:
           # need more (e.g. a real playwright browser) lazy-import it inside
           # the function under test, not at module scope, so it's fine for
           # those tests to stay mocked/unexercised here without the extra dep.
-          pip install -q pytest jsonschema fastapi httpx
+          pip install -q pytest jsonschema fastapi httpx uvicorn
           if [ -f tests/validate_manifest.py ]; then
             python3 tests/validate_manifest.py
           fi
