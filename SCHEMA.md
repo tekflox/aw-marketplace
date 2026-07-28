@@ -43,6 +43,9 @@ Structural schema lives in `schemas/apps.schema.json`; validated by
 | `tags` | no | list of strings | Search/filter tags. |
 | `has_config` | yes | bool | Whether the app has a config/settings window to open once install finishes. `aw-app-git` = `true` (gh login panel); `aw-app-essentials` = `false` (no settings — pure command install). |
 | `bootstrap` | yes | bool | Whether installing this app runs a bootstrap/install hook (e.g. apt-installs system CLIs). Both seeded apps = `true`. |
+| `publisher` | no | string | Marketplace display attribution. Not authored here — the workspace's catalog endpoint (`GET /api/apps/-/catalog`) fetches the app's own `aw-app.json` and merges its `publisher` field in at serve time (default `"TekFlox"`). Set it here only to override that value without touching the app repo. |
+| `resource_estimate` | no | object `{cpu, memory, disk}`, each `"low"\|"medium"\|"high"` | Same deal as `publisher` — normally sourced from the app's `aw-app.json resource_estimate` field and merged in server-side; set here only to override. |
+| `what_you_get` | no | object `{mcp_tools, ui_screens, commands}` (lists of strings) | Always server-derived, never authored here — the catalog endpoint computes it from the app's `aw-app.json contributes` (MCP tools from `contributes.mcp.provides`, UI screens from `contributes.windows`/`contributes.nav`, commands from `contributes.system_clis`/`contributes.commands`). Present only when the manifest fetch succeeds; omitted otherwise. |
 
 **Note:** the authoritative bootstrap/config declaration lives in the app's
 own `aw-app.json` (`contributes.system_clis`, `contributes.settings_panels`,

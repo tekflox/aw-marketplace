@@ -51,6 +51,21 @@
         "bootstrap": {
           "type": "boolean",
           "description": "Whether installing this app runs a bootstrap/install hook."
+        },
+        "publisher": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Override for the app's own aw-app.json publisher field (normally merged in server-side by the catalog endpoint)."
+        },
+        "resource_estimate": {
+          "type": "object",
+          "description": "Override for the app's own aw-app.json resource_estimate field (normally merged in server-side by the catalog endpoint).",
+          "additionalProperties": false,
+          "properties": {
+            "cpu": { "type": "string", "enum": ["low", "medium", "high"] },
+            "memory": { "type": "string", "enum": ["low", "medium", "high"] },
+            "disk": { "type": "string", "enum": ["low", "medium", "high"] }
+          }
         }
       }
     }
