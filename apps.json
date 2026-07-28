@@ -39,6 +39,19 @@
       "tags": ["presentations", "reports", "agents"],
       "has_config": false,
       "bootstrap": false
+    },
+    {
+      "id": "whiteboard",
+      "name": "Whiteboard",
+      "description": "Persistent, live-synced HTML canvas — set/patch content, broadcast changes to every open viewer over a WebSocket, round-trip with a presentation. Nav/view registration is blocked on a framework capability not shipped yet (see repo README); backend routes/WS + agent-piloted browser are live.",
+      "repo": "tekflox/aw-app-whiteboard",
+      "ref": "master",
+      "version": "0.1.0",
+      "icon": "square",
+      "category": "productivity",
+      "tags": ["whiteboard", "canvas", "agents"],
+      "has_config": false,
+      "bootstrap": false
     }
   ]
 }
