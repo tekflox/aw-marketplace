@@ -82,13 +82,13 @@
     {
       "id": "browser",
       "name": "AW Browser",
-      "description": "Runs a managed headless Chromium instance (CDP remote-debugging endpoint) as a service — start/stop lifecycle, journaled install, autostarts on activate. MVP exposes the CDP endpoint (ws://.../json/version) driveable by Playwright/CDP clients; chromedriver/Selenium WebDriver is phase 2.",
+      "description": "BLOCKED (2026-07-28): intended as a Tier 2 (container) app running a prebuilt Chromium image (CDP remote-debugging endpoint) with --shm-size=1g, replacing a fragile Tier 1 in-process prototype. NOT INSTALLABLE — the framework's Tier 2 (container-per-app) runtime doesn't exist yet and aw-workspace has no docker/podman socket to spawn sibling containers. See repo README for the full investigation.",
       "repo": "tekflox/aw-app-browser",
       "ref": "master",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "icon": "globe",
       "category": "dev-tools",
-      "tags": ["browser", "chromium", "cdp", "playwright", "automation"],
+      "tags": ["browser", "chromium", "cdp", "playwright", "automation", "blocked"],
       "has_config": true,
       "bootstrap": false
     },
