@@ -169,6 +169,54 @@
       ],
       "has_config": false,
       "bootstrap": true
+    },
+    {
+      "id": "hello",
+      "name": "Hello World (App Template)",
+      "description": "Template for building a decoupled aw-workspace app: a minimal, fully working example (installs a `hello` CLI) plus a bundled skill (aw-create-app) that teaches an agent how to author apps \u2014 manifest, tiers, capabilities, contributes, window widgets, install + marketplace release. Copy and rename to start a new app.",
+      "repo": "tekflox/aw-app-template",
+      "ref": "master",
+      "version": "0.2.0",
+      "icon": "package",
+      "category": "dev-tools",
+      "tags": [
+        "template",
+        "scaffold",
+        "skill",
+        "developer"
+      ],
+      "has_config": true,
+      "bootstrap": false,
+      "publisher": "TekFlox",
+      "resource_estimate": {
+        "cpu": "low",
+        "memory": "low",
+        "disk": "low"
+      }
+    },
+    {
+      "id": "devctl",
+      "name": "DevCtl",
+      "description": "Dev-control panel for the workspace \u2014 observe/control the workspace browser by talking CDP to the aw-app-browser container (live screenshot + navigation). Scaffold: first capability wired to aw-app-browser:9223.",
+      "repo": "tekflox/aw-app-devctl",
+      "ref": "master",
+      "version": "0.1.0",
+      "icon": "monitor",
+      "category": "dev-tools",
+      "tags": [
+        "devtools",
+        "browser",
+        "cdp",
+        "debug"
+      ],
+      "has_config": false,
+      "bootstrap": false,
+      "publisher": "TekFlox",
+      "resource_estimate": {
+        "cpu": "low",
+        "memory": "low",
+        "disk": "low"
+      }
     }
   ]
 }
