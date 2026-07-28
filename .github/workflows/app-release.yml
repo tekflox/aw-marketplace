@@ -1,0 +1,152 @@
+name: App release (reusable)
+
+# Called by a ~10-line caller workflow in each aw-app-* repo via:
+#   jobs:
+#     release:
+#       uses: tekflox/aw-marketplace/.github/workflows/app-release.yml@v1
+#       secrets: inherit
+#
+# Referenced by a MOVING tag (@v1) or @main so bumping this workflow
+# propagates to every caller's next run without touching their repos.
+on:
+  workflow_call:
+    inputs:
+      bump:
+        description: "Force a bump kind (only 'major' is meaningful here)."
+        type: string
+        required: false
+        default: ""
+    secrets:
+      MARKETPLACE_SYNC_TOKEN:
+        description: "PAT (repo scope) used to push/PR into tekflox/aw-marketplace."
+        required: true
+
+jobs:
+  release:
+    if: ${{ !contains(github.event.head_commit.message, '[skip release]') }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout app repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.MARKETPLACE_SYNC_TOKEN }}
+
+      - name: Checkout aw-marketplace scripts + catalog
+        uses: actions/checkout@v4
+        with:
+          repository: tekflox/aw-marketplace
+          path: _marketplace
+          token: ${{ secrets.MARKETPLACE_SYNC_TOKEN }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Determine bump kind + new version
+        id: bump
+        env:
+          MANUAL_BUMP: ${{ inputs.bump }}
+        run: |
+          set -euo pipefail
+          CURRENT_VERSION=$(python3 -c "import json;print(json.load(open('aw-app.json'))['version'])")
+          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          if [ -n "$LAST_TAG" ]; then
+            git log "${LAST_TAG}..HEAD" --format=%s > /tmp/commit_subjects.txt
+          else
+            git log --format=%s > /tmp/commit_subjects.txt
+          fi
+
+          MANUAL_FLAG=""
+          if [ "$MANUAL_BUMP" = "major" ] || grep -qi '\[major\]' /tmp/commit_subjects.txt; then
+            MANUAL_FLAG="--manual-bump major"
+          fi
+
+          NEW_VERSION=$(python3 _marketplace/scripts/bump_version.py "$CURRENT_VERSION" \
+            --commit-subjects-file /tmp/commit_subjects.txt $MANUAL_FLAG)
+          echo "current_version=$CURRENT_VERSION" >> "$GITHUB_OUTPUT"
+          echo "new_version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
+          echo "new_tag=v$NEW_VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Bump aw-app.json, tag, and push release branch
+        id: release
+        env:
+          NEW_VERSION: ${{ steps.bump.outputs.new_version }}
+          NEW_TAG: ${{ steps.bump.outputs.new_tag }}
+        run: |
+          set -euo pipefail
+          python3 -c "
+          import json
+          p = 'aw-app.json'
+          data = json.load(open(p))
+          data['version'] = '$NEW_VERSION'
+          json.dump(data, open(p, 'w'), indent=2)
+          open(p, 'a').write('\n')
+          "
+          git config user.name "aw-marketplace-sync[bot]"
+          git config user.email "aw-marketplace-sync@tekflox.com"
+          git add aw-app.json
+          git commit -m "chore(release): bump to $NEW_TAG [skip release]"
+          git tag "$NEW_TAG"
+          git branch "release/$NEW_TAG"
+          git push origin HEAD:"${GITHUB_REF_NAME}"
+          git push origin "$NEW_TAG"
+          git push origin "release/$NEW_TAG"
+
+      - name: Sync marketplace catalog entry
+        id: sync
+        env:
+          GH_TOKEN: ${{ secrets.MARKETPLACE_SYNC_TOKEN }}
+          NEW_TAG: ${{ steps.bump.outputs.new_tag }}
+          APP_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          cd _marketplace
+          APP_ID=$(python3 -c "import json;print(json.load(open('../aw-app.json'))['id'])")
+          BRANCH="sync/${APP_ID}"
+
+          git config user.name "aw-marketplace-sync[bot]"
+          git config user.email "aw-marketplace-sync@tekflox.com"
+
+          # Idempotent branch: reuse it if a PR is already open instead of duplicating.
+          if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null 2>&1; then
+            git fetch origin "$BRANCH"
+            git checkout "$BRANCH"
+            git merge origin/master --no-edit
+          else
+            git checkout -b "$BRANCH"
+          fi
+
+          set +e
+          python3 scripts/sync_catalog_entry.py ../aw-app.json apps.json "$NEW_TAG" --write
+          CHANGED=$?
+          set -e
+
+          if [ "$CHANGED" -ne 0 ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+          git add apps.json
+          git commit -m "chore(sync): ${APP_ID} -> ${NEW_TAG}"
+          git push -u origin "$BRANCH" --force-with-lease
+
+          EXISTING_PR=$(gh pr list --repo tekflox/aw-marketplace --head "$BRANCH" --json number --jq '.[0].number' || echo "")
+          if [ -z "$EXISTING_PR" ]; then
+            gh pr create --repo tekflox/aw-marketplace \
+              --title "chore(sync): ${APP_ID} -> ${NEW_TAG}" \
+              --body "Automated sync from ${APP_REPO}@${NEW_TAG} via app-release.yml." \
+              --base master --head "$BRANCH"
+          fi
+
+      - name: Auto-merge for first-party TekFlox sources
+        if: ${{ steps.sync.outputs.changed == 'true' && startsWith(github.repository, 'tekflox/') }}
+        env:
+          GH_TOKEN: ${{ secrets.MARKETPLACE_SYNC_TOKEN }}
+        run: |
+          set -euo pipefail
+          APP_ID=$(python3 -c "import json;print(json.load(open('aw-app.json'))['id'])")
+          gh pr merge --repo tekflox/aw-marketplace "sync/${APP_ID}" --auto --squash

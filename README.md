@@ -42,6 +42,38 @@ This repo IS the git catalog that `feature:apps-marketplace-tab-git-catalog`
 - `schemas/apps.schema.json` — JSON Schema `apps.json` validates against.
 - `tests/validate_apps.py` — validates `apps.json` against the schema +
   checks for duplicate `id`s: `.venv/aw/bin/python tests/validate_apps.py`.
+- `.github/workflows/app-release.yml` — reusable release workflow (see
+  "Marketplace auto-sync" below).
+- `scripts/bump_version.py` / `scripts/sync_catalog_entry.py` — pure-function
+  logic behind the reusable workflow, unit-tested in `tests/`.
+
+## Marketplace auto-sync (App Update Mechanism ADR, Metade A)
+
+Each `aw-app-*` repo has a ~10-line caller workflow
+(`.github/workflows/release.yml`) that calls this repo's reusable
+`app-release.yml` via `uses: tekflox/aw-marketplace/.github/workflows/app-release.yml@main`
++ `secrets: inherit`. Bumping the reusable workflow here propagates to every
+caller's next run — no per-repo edits needed. On push to the app's default
+branch it: bumps semver in `aw-app.json` (minor default, patch if every
+commit since the last tag is `fix:`/`docs:`/`chore:`, major only via
+`workflow_dispatch(bump=major)` or a `[major]` marker), commits with
+`[skip release]` (anti-loop guard), tags `vX.Y.Z` + branches `release/vX.Y.Z`,
+then opens/updates an idempotent PR here (`sync/<app-id>`) bumping the app's
+`apps.json` entry (`version` + `ref` pinned to the new tag, plus
+name/description/publisher/resource_estimate drift) — and auto-merges it
+(`gh pr merge --auto --squash`) when the source repo is first-party
+(`tekflox/*`).
+
+**Setup required (one-time, human):** an org secret
+`MARKETPLACE_SYNC_TOKEN` (a GitHub PAT, `repo` scope, on the `tekflox` org)
+must exist so the workflow can push/PR into this repo from the caller repos.
+It does **not** exist yet as of 2026-07-28 — until it's created, pushes to
+apps with the caller workflow installed will fail at the "Checkout
+aw-marketplace scripts + catalog" / bump-and-push step with an auth error.
+See the [App Update Mechanism ADR](../../docs/knowledge_base/docs/architecture/app-update-mechanism.md).
+Branch protection on `master` requiring the `Validate / validate-apps-json`
+check (from `.github/workflows/validate.yml`) is also not yet configured —
+needed for the "required check" half of the auto-merge story.
 
 ## Seeded apps
 
