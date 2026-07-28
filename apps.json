@@ -41,6 +41,19 @@
       "bootstrap": true
     },
     {
+      "id": "brew",
+      "name": "Homebrew",
+      "description": "Installs Homebrew into the workspace via a non-root git-clone method (the official installer requires sudo/root, unavailable in this container) and keeps it present across restarts. No login/settings/secrets, pure command install.",
+      "repo": "tekflox/aw-app-brew",
+      "ref": "master",
+      "version": "0.1.0",
+      "icon": "beer",
+      "category": "dev-tools",
+      "tags": ["brew", "homebrew", "linuxbrew", "cli"],
+      "has_config": false,
+      "bootstrap": true
+    },
+    {
       "id": "node",
       "name": "Node.js Dev",
       "description": "Installs a Node.js dev toolkit into the workspace — nvm, Node.js (LTS by default), npm, npx, and yarn/pnpm via corepack — and keeps it present across restarts. No login/settings/secrets beyond the Node version to install.",
