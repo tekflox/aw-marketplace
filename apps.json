@@ -67,6 +67,19 @@
       "bootstrap": true
     },
     {
+      "id": "terraform",
+      "name": "Terraform",
+      "description": "Installs Terraform (single Go binary) into the workspace and keeps it present across restarts. No login/settings/secrets beyond the Terraform version to install.",
+      "repo": "tekflox/aw-app-terraform",
+      "ref": "master",
+      "version": "0.1.0",
+      "icon": "terminal",
+      "category": "dev-tools",
+      "tags": ["terraform", "iac", "cli", "hashicorp"],
+      "has_config": true,
+      "bootstrap": true
+    },
+    {
       "id": "presentations",
       "name": "Presentations",
       "description": "HTML presentations created by agents (diffs, reports, dashboards) — top-bar gallery nav + a viewer window. Nav/view registration is blocked on a framework capability not shipped yet (see repo README); backend routes/WS are live.",
