@@ -46,8 +46,8 @@
       "name": "Essential CLI Tools",
       "description": "Installs a broad set of workspace CLI tooling and keeps it present across restarts: core networking/utilities (telnet, ping, curl, nc, perl, python, vim, docker), a Node.js dev toolkit (nvm, node, npm, npx, yarn, pnpm), Terraform, and Homebrew (Linuxbrew). Consolidates what used to be four separate apps (essentials, node, terraform, brew) into one, since they're all the same kind of thing: pure command installs, no login/settings/secrets beyond two version knobs.",
       "repo": "tekflox/aw-app-essentials",
-      "ref": "v0.5.0",
-      "version": "0.5.0",
+      "ref": "v0.6.0",
+      "version": "0.6.0",
       "icon": "terminal",
       "category": "dev-tools",
       "tags": [
