@@ -149,4 +149,11 @@ jobs:
         run: |
           set -euo pipefail
           APP_ID=$(python3 -c "import json;print(json.load(open('aw-app.json'))['id'])")
-          gh pr merge --repo tekflox/aw-marketplace "sync/${APP_ID}" --auto --squash
+          # `--auto` enables GitHub's auto-merge-when-checks-pass queue, which
+          # errors ("Pull request is in clean status") on a PR with no pending
+          # required checks to wait for — exactly this repo's case (no branch
+          # protection checks configured). Merge directly instead; fall back
+          # to --auto only if a future required check makes an immediate
+          # merge briefly unavailable.
+          gh pr merge --repo tekflox/aw-marketplace "sync/${APP_ID}" --squash \
+            || gh pr merge --repo tekflox/aw-marketplace "sync/${APP_ID}" --auto --squash
