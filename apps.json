@@ -82,13 +82,13 @@
     {
       "id": "browser",
       "name": "AW Browser",
-      "description": "BLOCKED (2026-07-28): intended as a Tier 2 (container) app running a prebuilt Chromium image (CDP remote-debugging endpoint) with --shm-size=1g, replacing a fragile Tier 1 in-process prototype. NOT INSTALLABLE — the framework's Tier 2 (container-per-app) runtime doesn't exist yet and aw-workspace has no docker/podman socket to spawn sibling containers. See repo README for the full investigation.",
+      "description": "Headless Chromium as a Tier-2 (container) app — a prebuilt ghcr.io/browserless/chromium image spawned by the workspace over the rootless podman socket, run with --shm-size=1g, its CDP endpoint reverse-proxied at /api/apps/browser/* (ws://.../json/version, driveable by Playwright/CDP clients). First real Tier-2 app; supersedes the fragile Tier-1 in-process prototype.",
       "repo": "tekflox/aw-app-browser",
       "ref": "master",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "icon": "globe",
       "category": "dev-tools",
-      "tags": ["browser", "chromium", "cdp", "playwright", "automation", "blocked"],
+      "tags": ["browser", "chromium", "cdp", "playwright", "automation", "tier-2", "container"],
       "has_config": true,
       "bootstrap": false
     },
