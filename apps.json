@@ -175,10 +175,10 @@
     {
       "id": "whiteboard",
       "name": "Whiteboard",
-      "description": "Persistent, live-synced HTML canvas \u2014 set/patch content, broadcast changes to every open viewer over a WebSocket, round-trip with a presentation. Nav/view registration is blocked on a framework capability not shipped yet (see repo README); backend routes/WS + agent-piloted browser are live.",
+      "description": "Persistent, live-synced HTML canvas \u2014 set/patch content, broadcast changes over a WebSocket to every open viewer, round-trip with a presentation. Migrated from the aw monolith (src/api/routes/whiteboard.py + whiteboard_manager.py + WhiteboardWindow.jsx).",
       "repo": "tekflox/aw-app-whiteboard",
-      "ref": "master",
-      "version": "0.1.0",
+      "ref": "v0.2.0",
+      "version": "0.2.0",
       "icon": "square",
       "category": "productivity",
       "tags": [
@@ -187,7 +187,13 @@
         "agents"
       ],
       "has_config": false,
-      "bootstrap": false
+      "bootstrap": false,
+      "publisher": "TekFlox",
+      "resource_estimate": {
+        "cpu": "medium",
+        "memory": "~450 MB",
+        "disk": "~350 MB"
+      }
     },
     {
       "id": "mcp-gateway",
