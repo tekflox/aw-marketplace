@@ -173,10 +173,10 @@
     {
       "id": "hello",
       "name": "Hello World (App Template)",
-      "description": "Template for building a decoupled aw-workspace app: a minimal, fully working example (installs a `hello` CLI) plus a bundled skill (aw-create-app) that teaches an agent how to author apps \u2014 manifest, tiers, capabilities, contributes, window widgets, install + marketplace release. Copy and rename to start a new app.",
+      "description": "TEMPLATE \u2014 a minimal, fully working decoupled app: installs one trivial CLI (`hello`, prints a configurable greeting) through the gated commands:install facade, with tests and CI/marketplace release already wired. Rename everything marked TEMPLATE/hello before this becomes a real app \u2014 see README.md.",
       "repo": "tekflox/aw-app-template",
-      "ref": "master",
-      "version": "0.2.0",
+      "ref": "v0.3.1",
+      "version": "0.3.1",
       "icon": "package",
       "category": "dev-tools",
       "tags": [
