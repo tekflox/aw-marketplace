@@ -158,10 +158,10 @@
     {
       "id": "presentations",
       "name": "Presentations",
-      "description": "HTML presentations created by agents (diffs, reports, dashboards) \u2014 top-bar gallery nav + a viewer window. Nav/view registration is blocked on a framework capability not shipped yet (see repo README); backend routes/WS are live.",
+      "description": "HTML presentations created by agents (diffs, reports, dashboards) \u2014 top-bar gallery nav + a window that renders each presentation. Replaces the monolith's /ws/presentations feature and the aw-frontend static PresentationNav.",
       "repo": "tekflox/aw-app-presentations",
-      "ref": "master",
-      "version": "0.1.0",
+      "ref": "v0.2.0",
+      "version": "0.2.0",
       "icon": "layout-dashboard",
       "category": "productivity",
       "tags": [
@@ -170,7 +170,13 @@
         "agents"
       ],
       "has_config": false,
-      "bootstrap": false
+      "bootstrap": false,
+      "publisher": "TekFlox",
+      "resource_estimate": {
+        "cpu": "low",
+        "memory": "-",
+        "disk": "~10 MB"
+      }
     },
     {
       "id": "whiteboard",
