@@ -26,6 +26,19 @@
       "tags": ["cli", "networking", "essentials"],
       "has_config": false,
       "bootstrap": true
+    },
+    {
+      "id": "presentations",
+      "name": "Presentations",
+      "description": "HTML presentations created by agents (diffs, reports, dashboards) — top-bar gallery nav + a viewer window. Nav/view registration is blocked on a framework capability not shipped yet (see repo README); backend routes/WS are live.",
+      "repo": "tekflox/aw-app-presentations",
+      "ref": "master",
+      "version": "0.1.0",
+      "icon": "layout-dashboard",
+      "category": "productivity",
+      "tags": ["presentations", "reports", "agents"],
+      "has_config": false,
+      "bootstrap": false
     }
   ]
 }
