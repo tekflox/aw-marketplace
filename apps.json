@@ -56,7 +56,7 @@
         "essentials",
         "docker"
       ],
-      "has_config": false,
+      "has_config": true,
       "bootstrap": true,
       "publisher": "TekFlox",
       "resource_estimate": {
