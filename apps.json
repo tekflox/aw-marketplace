@@ -41,6 +41,19 @@
       "bootstrap": true
     },
     {
+      "id": "node",
+      "name": "Node.js Dev",
+      "description": "Installs a Node.js dev toolkit into the workspace — nvm, Node.js (LTS by default), npm, npx, and yarn/pnpm via corepack — and keeps it present across restarts. No login/settings/secrets beyond the Node version to install.",
+      "repo": "tekflox/aw-app-node",
+      "ref": "master",
+      "version": "0.1.0",
+      "icon": "terminal-square",
+      "category": "dev-tools",
+      "tags": ["node", "npm", "nvm", "yarn", "pnpm", "javascript"],
+      "has_config": true,
+      "bootstrap": true
+    },
+    {
       "id": "presentations",
       "name": "Presentations",
       "description": "HTML presentations created by agents (diffs, reports, dashboards) — top-bar gallery nav + a viewer window. Nav/view registration is blocked on a framework capability not shipped yet (see repo README); backend routes/WS are live.",
