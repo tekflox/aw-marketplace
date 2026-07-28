@@ -45,6 +45,22 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Run app tests (must pass before any bump/tag/marketplace sync)
+        run: |
+          set -euo pipefail
+          # Common baseline every aw-app-* repo's test suite needs (manifest
+          # validation + FastAPI TestClient-based route tests) — apps that
+          # need more (e.g. a real playwright browser) lazy-import it inside
+          # the function under test, not at module scope, so it's fine for
+          # those tests to stay mocked/unexercised here without the extra dep.
+          pip install -q pytest jsonschema fastapi httpx
+          if [ -f tests/validate_manifest.py ]; then
+            python3 tests/validate_manifest.py
+          fi
+          if compgen -G "tests/test_*.py" > /dev/null; then
+            python3 -m pytest tests/ -q
+          fi
+
       - name: Determine bump kind + new version
         id: bump
         env:
