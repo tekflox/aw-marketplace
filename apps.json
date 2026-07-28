@@ -20,8 +20,8 @@
       "publisher": "TekFlox",
       "resource_estimate": {
         "cpu": "low",
-        "memory": "-",
-        "disk": "~60 MB"
+        "memory": "low",
+        "disk": "low"
       }
     },
     {
@@ -61,8 +61,8 @@
       "publisher": "TekFlox",
       "resource_estimate": {
         "cpu": "low",
-        "memory": "-",
-        "disk": "~80 MB"
+        "memory": "low",
+        "disk": "low"
       }
     },
     {
@@ -180,8 +180,8 @@
       "publisher": "TekFlox",
       "resource_estimate": {
         "cpu": "low",
-        "memory": "-",
-        "disk": "~10 MB"
+        "memory": "low",
+        "disk": "low"
       }
     },
     {
@@ -203,8 +203,8 @@
       "publisher": "TekFlox",
       "resource_estimate": {
         "cpu": "medium",
-        "memory": "~450 MB",
-        "disk": "~350 MB"
+        "memory": "medium",
+        "disk": "medium"
       }
     },
     {
