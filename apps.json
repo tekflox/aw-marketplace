@@ -130,6 +130,19 @@
       "tags": ["whiteboard", "canvas", "agents"],
       "has_config": false,
       "bootstrap": false
+    },
+    {
+      "id": "mcp-gateway",
+      "name": "MCP Gateway",
+      "description": "Federated MCP gateway as a Tier-2 (container) app — exposes stdio MCP servers over Streamable HTTP + a /link WebSocket for gateway-to-gateway federation (flat namespace first-wins, per-peer tokens, federation-depth limit). ADDITIVE: coexists with the monolith's in-repo src/mcp/gateway.py (profiles + /lazy), which it will eventually strangle once it reaches parity. NOTE (2026-07-28): meant to be a SYSTEM app (always installed, non-optional) — the apps framework has no such flag/mechanism yet, so it installs today as a regular optional app pending that framework decision.",
+      "repo": "tekflox/aw-mcp-gateway",
+      "ref": "main",
+      "version": "0.1.0",
+      "icon": "network",
+      "category": "dev-tools",
+      "tags": ["mcp", "gateway", "federation", "tier-2", "container"],
+      "has_config": false,
+      "bootstrap": true
     }
   ]
 }
