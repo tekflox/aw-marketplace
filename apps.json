@@ -80,6 +80,19 @@
       "bootstrap": true
     },
     {
+      "id": "browser",
+      "name": "AW Browser",
+      "description": "Runs a managed headless Chromium instance (CDP remote-debugging endpoint) as a service — start/stop lifecycle, journaled install, autostarts on activate. MVP exposes the CDP endpoint (ws://.../json/version) driveable by Playwright/CDP clients; chromedriver/Selenium WebDriver is phase 2.",
+      "repo": "tekflox/aw-app-browser",
+      "ref": "master",
+      "version": "0.1.0",
+      "icon": "globe",
+      "category": "dev-tools",
+      "tags": ["browser", "chromium", "cdp", "playwright", "automation"],
+      "has_config": true,
+      "bootstrap": false
+    },
+    {
       "id": "presentations",
       "name": "Presentations",
       "description": "HTML presentations created by agents (diffs, reports, dashboards) — top-bar gallery nav + a viewer window. Nav/view registration is blocked on a framework capability not shipped yet (see repo README); backend routes/WS are live.",
