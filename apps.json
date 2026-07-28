@@ -30,13 +30,13 @@
     {
       "id": "essentials",
       "name": "Essential CLI Tools",
-      "description": "Installs a set of essential CLI tools into the workspace — telnet, ping, curl, nc, perl, python — and keeps them present across restarts. No login/settings/secrets, pure command install.",
+      "description": "Installs a set of essential CLI tools into the workspace — telnet, ping, curl, nc, perl, python, vim, docker (CLI + Compose) — and keeps them present across restarts. No login/settings/secrets, pure command install.",
       "repo": "tekflox/aw-app-essentials",
       "ref": "master",
       "version": "0.1.0",
       "icon": "terminal",
       "category": "dev-tools",
-      "tags": ["cli", "networking", "essentials"],
+      "tags": ["cli", "networking", "essentials", "docker"],
       "has_config": false,
       "bootstrap": true
     },
