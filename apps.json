@@ -91,8 +91,8 @@
       "name": "Browser",
       "description": "Chromium for AW workspaces with an interactive noVNC screen, CDP automation endpoint, workspace cookie-proxy support, and configurable window size.",
       "repo": "tekflox/aw-app-browser",
-      "ref": "v0.7.0",
-      "version": "0.7.0",
+      "ref": "v0.7.1",
+      "version": "0.7.1",
       "icon": "globe",
       "category": "dev-tools",
       "tags": [
@@ -110,7 +110,7 @@
       "resource_estimate": {
         "cpu": "medium",
         "memory": "~500 MB",
-        "disk": "~500 MB (prebuilt image)"
+        "disk": "~500 MB"
       }
     },
     {
