@@ -109,8 +109,8 @@
       "publisher": "TekFlox",
       "resource_estimate": {
         "cpu": "medium",
-        "memory": "~500 MB",
-        "disk": "~500 MB (prebuilt image)"
+        "memory": "medium",
+        "disk": "medium"
       }
     },
     {
