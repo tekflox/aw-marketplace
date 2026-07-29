@@ -63,11 +63,18 @@
           "additionalProperties": false,
           "properties": {
             "cpu": { "type": "string", "enum": ["low", "medium", "high"] },
-            "memory": { "type": "string", "enum": ["low", "medium", "high"] },
-            "disk": { "type": "string", "enum": ["low", "medium", "high"] }
+            "memory": { "$ref": "#/definitions/resourceEstimateSize" },
+            "disk": { "$ref": "#/definitions/resourceEstimateSize" }
           }
         }
       }
+    },
+    "resourceEstimateSize": {
+      "type": "string",
+      "oneOf": [
+        { "enum": ["low", "medium", "high"] },
+        { "pattern": "^~?[0-9]+(\\.[0-9]+)? ?(KB|MB|GB|TB)$" }
+      ]
     }
   }
 }
