@@ -146,20 +146,57 @@ jobs:
           git add apps.json
           git commit -m "chore(sync): ${APP_ID} -> ${NEW_TAG}"
           git push -u origin "$BRANCH" --force-with-lease
+          export APP_ID BRANCH
 
-          PR_TITLE="chore(sync): ${APP_ID} -> ${NEW_TAG}"
-          PR_BODY="Automated sync from ${APP_REPO}@${NEW_TAG} via app-release.yml."
-          EXISTING_PR=$(gh pr list --repo tekflox/aw-marketplace --head "$BRANCH" --json number --jq '.[0].number' || echo "")
-          if [ -z "$EXISTING_PR" ]; then
-            gh pr create --repo tekflox/aw-marketplace \
-              --title "$PR_TITLE" \
-              --body "$PR_BODY" \
-              --base master --head "$BRANCH"
-          else
-            gh pr edit --repo tekflox/aw-marketplace "$EXISTING_PR" \
-              --title "$PR_TITLE" \
-              --body "$PR_BODY"
-          fi
+          python3 - <<'PY'
+          import json
+          import os
+          import urllib.error
+          import urllib.parse
+          import urllib.request
+
+          token = os.environ["GH_TOKEN"]
+          app_id = os.environ["APP_ID"]
+          new_tag = os.environ["NEW_TAG"]
+          app_repo = os.environ["APP_REPO"]
+          branch = os.environ["BRANCH"]
+          title = f"chore(sync): {app_id} -> {new_tag}"
+          body = f"Automated sync from {app_repo}@{new_tag} via app-release.yml."
+          api = "https://api.github.com"
+
+          def request(method, path, payload=None):
+              data = None if payload is None else json.dumps(payload).encode()
+              req = urllib.request.Request(
+                  f"{api}{path}",
+                  data=data,
+                  method=method,
+                  headers={
+                      "Authorization": f"Bearer {token}",
+                      "Accept": "application/vnd.github+json",
+                      "X-GitHub-Api-Version": "2022-11-28",
+                      "Content-Type": "application/json",
+                  },
+              )
+              with urllib.request.urlopen(req) as response:
+                  body = response.read()
+                  return json.loads(body) if body else None
+
+          head = urllib.parse.quote(f"tekflox:{branch}", safe="")
+          prs = request("GET", f"/repos/tekflox/aw-marketplace/pulls?state=open&head={head}")
+          if prs:
+              pr = request("PATCH", f"/repos/tekflox/aw-marketplace/pulls/{prs[0]['number']}", {
+                  "title": title,
+                  "body": body,
+              })
+          else:
+              pr = request("POST", "/repos/tekflox/aw-marketplace/pulls", {
+                  "title": title,
+                  "body": body,
+                  "base": "master",
+                  "head": branch,
+              })
+          print(f"pr_number={pr['number']}")
+          PY
 
       - name: Auto-merge first-party TekFlox sync PRs
         if: ${{ steps.sync.outputs.changed == 'true' && startsWith(github.repository, 'tekflox/') }}
@@ -168,12 +205,80 @@ jobs:
         run: |
           set -euo pipefail
           APP_ID=$(python3 -c "import json;print(json.load(open('aw-app.json'))['id'])")
-          PR_NUMBER=$(gh pr list --repo tekflox/aw-marketplace \
-            --head "sync/${APP_ID}" --json number --jq '.[0].number')
+          BRANCH="sync/${APP_ID}"
+          export BRANCH
+          python3 - <<'PY'
+          import json
+          import os
+          import urllib.parse
+          import urllib.request
+          import urllib.error
+
+          token = os.environ["GH_TOKEN"]
+          branch = os.environ["BRANCH"]
+          api = "https://api.github.com"
+          graphql = "https://api.github.com/graphql"
+
+          def request(method, path, payload=None):
+              data = None if payload is None else json.dumps(payload).encode()
+              req = urllib.request.Request(
+                  f"{api}{path}",
+                  data=data,
+                  method=method,
+                  headers={
+                      "Authorization": f"Bearer {token}",
+                      "Accept": "application/vnd.github+json",
+                      "X-GitHub-Api-Version": "2022-11-28",
+                      "Content-Type": "application/json",
+                  },
+              )
+              with urllib.request.urlopen(req) as response:
+                  body = response.read()
+                  return json.loads(body) if body else None
+
+          def graphql_request(query, variables):
+              req = urllib.request.Request(
+                  graphql,
+                  data=json.dumps({"query": query, "variables": variables}).encode(),
+                  method="POST",
+                  headers={
+                      "Authorization": f"Bearer {token}",
+                      "Accept": "application/vnd.github+json",
+                      "Content-Type": "application/json",
+                  },
+              )
+              with urllib.request.urlopen(req) as response:
+                  payload = json.load(response)
+              if payload.get("errors"):
+                  raise RuntimeError(payload["errors"])
+              return payload["data"]
+
+          head = urllib.parse.quote(f"tekflox:{branch}", safe="")
+          prs = request("GET", f"/repos/tekflox/aw-marketplace/pulls?state=open&head={head}")
+          if not prs:
+              raise SystemExit(f"No open PR found for {branch}")
+          pr = prs[0]
 
           # First-party app repos may queue their marketplace sync PR for
-          # auto-merge. If GitHub reports the PR is already clean with no
-          # pending required checks, merge immediately because it has already
-          # satisfied the current repository policy.
-          gh pr merge --repo tekflox/aw-marketplace "$PR_NUMBER" --auto --squash \
-            || gh pr merge --repo tekflox/aw-marketplace "$PR_NUMBER" --squash
+          # auto-merge. If auto-merge is unavailable because the PR is already
+          # mergeable, fall back to an immediate squash merge.
+          try:
+              graphql_request(
+                  """
+                  mutation($pullRequestId: ID!) {
+                    enablePullRequestAutoMerge(input: {
+                      pullRequestId: $pullRequestId,
+                      mergeMethod: SQUASH
+                    }) { pullRequest { number } }
+                  }
+                  """,
+                  {"pullRequestId": pr["node_id"]},
+              )
+              print(f"auto_merge_enabled=true pr_number={pr['number']}")
+          except Exception as exc:
+              print(f"auto_merge_unavailable={exc}; attempting immediate squash merge")
+              request("PUT", f"/repos/tekflox/aw-marketplace/pulls/{pr['number']}/merge", {
+                  "merge_method": "squash",
+              })
+              print(f"merged=true pr_number={pr['number']}")
+          PY
