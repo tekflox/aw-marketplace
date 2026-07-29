@@ -126,14 +126,11 @@ jobs:
           git config user.name "aw-marketplace-sync[bot]"
           git config user.email "aw-marketplace-sync@tekflox.com"
 
-          # Idempotent branch: reuse it if a PR is already open instead of duplicating.
-          if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null 2>&1; then
-            git fetch origin "$BRANCH"
-            git checkout "$BRANCH"
-            git merge origin/master --no-edit
-          else
-            git checkout -b "$BRANCH"
-          fi
+          # Idempotent PR, clean branch history: always rebuild the sync branch
+          # from current master. Reusing squash-merged sync branches preserves
+          # old commits in the PR commit list even when the diff is clean.
+          git fetch origin master
+          git checkout -B "$BRANCH" origin/master
 
           set +e
           python3 scripts/sync_catalog_entry.py ../aw-app.json apps.json "$NEW_TAG" --write
