@@ -150,12 +150,18 @@ jobs:
           git commit -m "chore(sync): ${APP_ID} -> ${NEW_TAG}"
           git push -u origin "$BRANCH" --force-with-lease
 
+          PR_TITLE="chore(sync): ${APP_ID} -> ${NEW_TAG}"
+          PR_BODY="Automated sync from ${APP_REPO}@${NEW_TAG} via app-release.yml."
           EXISTING_PR=$(gh pr list --repo tekflox/aw-marketplace --head "$BRANCH" --json number --jq '.[0].number' || echo "")
           if [ -z "$EXISTING_PR" ]; then
             gh pr create --repo tekflox/aw-marketplace \
-              --title "chore(sync): ${APP_ID} -> ${NEW_TAG}" \
-              --body "Automated sync from ${APP_REPO}@${NEW_TAG} via app-release.yml." \
+              --title "$PR_TITLE" \
+              --body "$PR_BODY" \
               --base master --head "$BRANCH"
+          else
+            gh pr edit --repo tekflox/aw-marketplace "$EXISTING_PR" \
+              --title "$PR_TITLE" \
+              --body "$PR_BODY"
           fi
 
       - name: Auto-merge first-party TekFlox sync PRs
