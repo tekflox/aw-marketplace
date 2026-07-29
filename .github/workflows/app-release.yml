@@ -158,18 +158,19 @@ jobs:
               --base master --head "$BRANCH"
           fi
 
-      - name: Auto-merge for first-party TekFlox sources
+      - name: Auto-merge first-party TekFlox sync PRs
         if: ${{ steps.sync.outputs.changed == 'true' && startsWith(github.repository, 'tekflox/') }}
         env:
           GH_TOKEN: ${{ secrets.MARKETPLACE_SYNC_TOKEN }}
         run: |
           set -euo pipefail
           APP_ID=$(python3 -c "import json;print(json.load(open('aw-app.json'))['id'])")
-          # `--auto` enables GitHub's auto-merge-when-checks-pass queue, which
-          # errors ("Pull request is in clean status") on a PR with no pending
-          # required checks to wait for — exactly this repo's case (no branch
-          # protection checks configured). Merge directly instead; fall back
-          # to --auto only if a future required check makes an immediate
-          # merge briefly unavailable.
-          gh pr merge --repo tekflox/aw-marketplace "sync/${APP_ID}" --squash \
-            || gh pr merge --repo tekflox/aw-marketplace "sync/${APP_ID}" --auto --squash
+          PR_NUMBER=$(gh pr list --repo tekflox/aw-marketplace \
+            --head "sync/${APP_ID}" --json number --jq '.[0].number')
+
+          # First-party app repos may queue their marketplace sync PR for
+          # auto-merge. If GitHub reports the PR is already clean with no
+          # pending required checks, merge immediately because it has already
+          # satisfied the current repository policy.
+          gh pr merge --repo tekflox/aw-marketplace "$PR_NUMBER" --auto --squash \
+            || gh pr merge --repo tekflox/aw-marketplace "$PR_NUMBER" --squash
