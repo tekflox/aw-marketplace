@@ -60,20 +60,19 @@ commit since the last tag is `fix:`/`docs:`/`chore:`, major only via
 `[skip release]` (anti-loop guard), tags `vX.Y.Z` + branches `release/vX.Y.Z`,
 then opens/updates an idempotent PR here (`sync/<app-id>`) bumping the app's
 `apps.json` entry (`version` + `ref` pinned to the new tag, plus
-name/description/publisher/resource_estimate drift) — and auto-merges it
-(`gh pr merge --auto --squash`) when the source repo is first-party
-(`tekflox/*`).
+name/description/publisher/resource_estimate drift). The sync branch is always
+rebuilt from current `origin/master` before the catalog edit, so squash-merged
+release branches do not leak old commits into later PR history. First-party
+source repos (`tekflox/*`) enable auto-merge on that PR with
+`gh pr merge --auto --squash` so GitHub merges it after required checks pass.
 
 **Setup required (one-time, human):** an org secret
 `MARKETPLACE_SYNC_TOKEN` (a GitHub PAT, `repo` scope, on the `tekflox` org)
 must exist so the workflow can push/PR into this repo from the caller repos.
-It does **not** exist yet as of 2026-07-28 — until it's created, pushes to
-apps with the caller workflow installed will fail at the "Checkout
-aw-marketplace scripts + catalog" / bump-and-push step with an auth error.
+Branch protection on `master` requires the `Validate / validate-apps-json`
+check from `.github/workflows/validate.yml`; that required check is what makes
+auto-merge wait for catalog validation instead of merging immediately.
 See the [App Update Mechanism ADR](../../docs/knowledge_base/docs/architecture/app-update-mechanism.md).
-Branch protection on `master` requiring the `Validate / validate-apps-json`
-check (from `.github/workflows/validate.yml`) is also not yet configured —
-needed for the "required check" half of the auto-merge story.
 
 ## Seeded apps
 
