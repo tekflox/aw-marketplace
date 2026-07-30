@@ -5,11 +5,9 @@ import copy
 import pathlib
 import sys
 
-import pytest
-
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent / "scripts"))
 
-from sync_catalog_entry import apply_to_catalog, diff_entry  # noqa: E402
+from sync_catalog_entry import apply_to_catalog, create_entry, diff_entry  # noqa: E402
 
 APP_MANIFEST = {
     "id": "essentials",
@@ -83,7 +81,42 @@ def test_apply_to_catalog_updates_matching_app_only():
     assert git_entry["version"] == "0.1.0"  # untouched
 
 
-def test_apply_to_catalog_raises_for_unknown_app_id():
+def test_create_entry_builds_conservative_first_listing():
+    manifest = {
+        "id": "mcp-tools",
+        "name": "MCP Tools",
+        "version": "0.2.0",
+        "description": "Installs MCP helper tools.",
+        "publisher": "TekFlox",
+        "resource_estimate": {"cpu": "low", "memory": "low", "disk": "low"},
+        "config_schema": {"type": "object", "properties": {"endpoint": {"type": "string"}}},
+        "contributes": {
+            "system_clis": [{"name": "aw-playwright-mcp", "installer": "scripts/install.sh"}]
+        },
+    }
+
+    entry = create_entry(manifest, new_ref="v0.2.0", repo="tekflox/aw-app-mcp-tools")
+
+    assert entry["id"] == "mcp-tools"
+    assert entry["repo"] == "tekflox/aw-app-mcp-tools"
+    assert entry["ref"] == "v0.2.0"
+    assert entry["version"] == "0.2.0"
+    assert entry["icon"] == "plug"
+    assert entry["category"] == "dev-tools"
+    assert entry["tags"] == ["mcp", "tools", "aw-playwright-mcp"]
+    assert entry["has_config"] is True
+    assert entry["bootstrap"] is True
+    assert entry["publisher"] == "TekFlox"
+
+
+def test_apply_to_catalog_adds_unknown_app_id():
     catalog = {"manifest_version": 1, "apps": [dict(CATALOG_ENTRY)]}
-    with pytest.raises(KeyError):
-        apply_to_catalog(catalog, "does-not-exist", APP_MANIFEST, new_ref="v0.2.0")
+    manifest = dict(APP_MANIFEST, id="new-tool")
+
+    changed, updated_catalog = apply_to_catalog(
+        catalog, "new-tool", manifest, new_ref="v0.2.0", repo="tekflox/aw-app-new-tool"
+    )
+
+    assert changed is True
+    new_entry = next(a for a in updated_catalog["apps"] if a["id"] == "new-tool")
+    assert new_entry["repo"] == "tekflox/aw-app-new-tool"
