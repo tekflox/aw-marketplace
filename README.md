@@ -2,11 +2,9 @@
 
 The **apps marketplace catalog** — a single `apps.json` listing every app
 installable from the aw-workspace "Marketplace" screen (Apps view →
-Marketplace button). JSON (not YAML) to stay field-name-consistent with the
-apps' own `aw-app.json` manifest. This repo is the distribution SOURCE for the
-[Decoupled Apps Framework ADR](../../docs/knowledge_base/docs/architecture/decoupled-apps-framework.md),
-not the runtime that installs apps — the runtime lives in `aw-workspace`
-(Phase 8 of the ADR's phased plan).
+Marketplace button). JSON (not YAML) keeps field names consistent with each
+app's own `aw-app.json` manifest. This repo is the distribution source for
+workspace apps; the install runtime lives in `aw-workspace`.
 
 This repo holds **apps**, not agents/flows. There is a separate
 [`agents-platform-marketplace`](../agents-platform-marketplace) repo for the
@@ -25,15 +23,14 @@ consumer, don't conflate them.
    permissions/contributes/config_schema — this catalog only carries a UX
    summary), runs the app's bootstrap/install hook if `bootstrap: true`
    (system CLIs, etc. — see the app's own `aw-app.json` `contributes`), then
-   activates it per the ADR's Tier-1/Tier-2 runtime.
+   activates it in the workspace runtime.
 4. If the installed app's catalog entry has `has_config: true`, the UI opens
    that app's config/settings window right after install (the window itself
    is declared in the app's own manifest, e.g. `contributes.windows` /
    `contributes.settings_panels`).
 
-This repo IS the git catalog that `feature:apps-marketplace-tab-git-catalog`
-(the Marketplace tab in the Apps view) consumes, and it feeds ADR F8
-(marketplace type) — see "Phase 8" in the Decoupled Apps Framework ADR.
+This repo is the git catalog consumed by the Marketplace tab in the Apps
+view.
 
 ## Files
 
@@ -47,7 +44,7 @@ This repo IS the git catalog that `feature:apps-marketplace-tab-git-catalog`
 - `scripts/bump_version.py` / `scripts/sync_catalog_entry.py` — pure-function
   logic behind the reusable workflow, unit-tested in `tests/`.
 
-## Marketplace auto-sync (App Update Mechanism ADR, Metade A)
+## Marketplace auto-sync
 
 Each `aw-app-*` repo has a ~10-line caller workflow
 (`.github/workflows/release.yml`) that calls this repo's reusable
@@ -72,7 +69,7 @@ must exist so the workflow can push/PR into this repo from the caller repos.
 Branch protection on `master` requires the `Validate / validate-apps-json`
 check from `.github/workflows/validate.yml`; that required check is what makes
 auto-merge wait for catalog validation instead of merging immediately.
-See the [App Update Mechanism ADR](../../docs/knowledge_base/docs/architecture/app-update-mechanism.md).
+See the app update mechanism docs for the detailed release design.
 
 ## Seeded apps
 
