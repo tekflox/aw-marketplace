@@ -191,7 +191,7 @@
       "ref": "v0.2.1",
       "version": "0.2.1",
       "icon": "network",
-      "category": "dev-tools",
+      "category": "services",
       "signed": true,
       "tags": [
         "mcp",
