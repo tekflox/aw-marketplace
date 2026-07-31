@@ -206,7 +206,7 @@
       "resource_estimate": {
         "cpu": "low",
         "memory": "~150 MB",
-        "disk": "~200 MB (prebuilt image)"
+        "disk": "~200 MB"
       }
     },
     {

@@ -143,6 +143,18 @@ jobs:
           fi
           echo "changed=true" >> "$GITHUB_OUTPUT"
 
+          # Fail BEFORE pushing/opening a PR if the synced entry doesn't
+          # satisfy the catalog schema — sync_catalog_entry.py copies fields
+          # from the app's own aw-app.json verbatim (e.g. resource_estimate),
+          # which has no reason to already match apps.json's stricter schema
+          # (see 2026-07-31: mcp-gateway's disk field "~200 MB (prebuilt
+          # image)" merged despite failing validate-apps-json, because the
+          # only enforcement was a downstream PR check nobody was required to
+          # wait for). Catching it here fails the release job itself instead
+          # of landing an invalid entry as an open (or worse, merged) PR.
+          pip install -q jsonschema
+          python3 tests/validate_apps.py
+
           git add apps.json
           git commit -m "chore(sync): ${APP_ID} -> ${NEW_TAG}"
           git push -u origin "$BRANCH" --force-with-lease
