@@ -40,6 +40,10 @@
         },
         "icon": { "type": "string" },
         "category": { "type": "string" },
+        "signed": {
+          "type": "boolean",
+          "description": "Whether this catalog entry is trusted to receive high-risk capabilities during install."
+        },
         "tags": {
           "type": "array",
           "items": { "type": "string" }

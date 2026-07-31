@@ -19,6 +19,7 @@ Structural schema lives in `schemas/apps.schema.json`; validated by
       "version": "0.1.0",
       "icon": "git-branch",
       "category": "dev-tools",
+      "signed": true,
       "tags": ["git", "github", "cli"],
       "has_config": true,
       "bootstrap": true
@@ -40,6 +41,7 @@ Structural schema lives in `schemas/apps.schema.json`; validated by
 | `version` | no | string (semver) | Optional pin, matched against the installed `aw-app.json`'s own `version` field — a mismatch is a signal the catalog is stale, not necessarily a hard block. |
 | `icon` | no | string | Icon identifier for the Marketplace card. |
 | `category` | no | string | Grouping/filter in the Marketplace UI (e.g. `dev-tools`). |
+| `signed` | no | bool | Trust marker for marketplace-managed apps that may receive high-risk capabilities such as `containers:manage` during install. Omit or set `false` for ordinary low-risk apps. |
 | `tags` | no | list of strings | Search/filter tags. |
 | `has_config` | yes | bool | Whether the app has a config/settings window to open once install finishes. `aw-app-git` = `true` (gh login panel); `aw-app-essentials` = `false` (no settings — pure command install). |
 | `bootstrap` | yes | bool | Whether installing this app runs a bootstrap/install hook (e.g. apt-installs system CLIs). Both seeded apps = `true`. |

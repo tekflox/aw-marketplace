@@ -20,6 +20,7 @@ def make_catalog(resource_estimate):
                 "repo": "tekflox/aw-app-browser",
                 "has_config": True,
                 "bootstrap": False,
+                "signed": True,
                 "resource_estimate": resource_estimate,
             }
         ],

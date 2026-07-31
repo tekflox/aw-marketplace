@@ -192,6 +192,7 @@
       "version": "0.1.0",
       "icon": "network",
       "category": "dev-tools",
+      "signed": true,
       "tags": [
         "mcp",
         "gateway",
