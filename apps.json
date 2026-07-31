@@ -260,10 +260,10 @@
     {
       "id": "mcp-tools",
       "name": "MCP Tools",
-      "description": "Installs MCP helper tools for Agentic Workspace, starting with Playwright MCP wrappers and a ready-to-use mcp.json for shared and isolated browser automation.",
+      "description": "Installs MCP helper tools for Agentic Workspace, starting with a ready-to-use Playwright MCP config for shared browser automation.",
       "repo": "tekflox/aw-app-mcp-tools",
-      "ref": "v0.3.0",
-      "version": "0.3.0",
+      "ref": "v0.3.1",
+      "version": "0.3.1",
       "icon": "plug",
       "category": "dev-tools",
       "tags": [
