@@ -306,6 +306,29 @@
         "memory": "low",
         "disk": "medium"
       }
+    },
+    {
+      "id": "agents-platform-runners",
+      "name": "Agents Platform Runners",
+      "description": "Serves agent-CLI runner install scripts (claude/codex/copilot/cursor-agent \u2014 reused from the code-agent-clis app, single source of truth) over HTTP for agents-platform_multitenant's agent-images build to consume, and contributes the ported \"aw-agents\" MCP (agent_mcp.py) so agents-platform is controllable as MCP tools from this workspace.",
+      "repo": "tekflox/aw-app-agents-platform-runners",
+      "ref": "v0.2.0",
+      "version": "0.2.0",
+      "icon": "plug",
+      "category": "dev-tools",
+      "tags": [
+        "agents",
+        "platform",
+        "runners"
+      ],
+      "has_config": true,
+      "bootstrap": false,
+      "publisher": "TekFlox",
+      "resource_estimate": {
+        "cpu": "low",
+        "memory": "low",
+        "disk": "low"
+      }
     }
   ]
 }
