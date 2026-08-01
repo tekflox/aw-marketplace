@@ -285,8 +285,8 @@
       "name": "Code Agent CLIs",
       "description": "Installs AI coding-agent CLIs into the workspace: Claude Code (claude), OpenAI Codex (codex), GitHub Copilot CLI (copilot), and Cursor's cursor-agent. Pure command installs, no login/settings/secrets bundled here \u2014 each CLI still needs its own auth (e.g. `claude login`, `codex login`, `copilot`, `cursor-agent login`) run from a workspace terminal before use.",
       "repo": "tekflox/aw-app-code-agent-clis",
-      "ref": "v0.2.0",
-      "version": "0.2.0",
+      "ref": "v0.2.1",
+      "version": "0.2.1",
       "icon": "plug",
       "category": "dev-tools",
       "tags": [
