@@ -93,11 +93,11 @@
     },
     {
       "id": "proxy",
-      "name": "AW Proxy",
-      "description": "Browser cookie proxy: the HTTP CONNECT proxy the AW Browser tunnels through, the /sync-cookies + /clear-cookies API the aw-sync browser extensions (Chrome + iOS/Safari, downloadable from the app's window) push cookies through, and encrypted persistence of chosen cookies in Postgres so they survive a proxy restart. aw-app-browser depends on this app for authentication.",
+      "name": "Proxy",
+      "description": "Browser cookie proxy: an HTTP CONNECT proxy the AW Browser tunnels through, plus the cookie-sync API (/sync-cookies, /clear-cookies) that the aw-sync browser extensions (Chrome + iOS/Safari) push the user's real-browser cookies through, and encrypted persistence of chosen cookies in Postgres so they survive a proxy restart. aw-app-browser depends on this app for authentication.",
       "repo": "tekflox/aw-app-proxy",
-      "ref": "master",
-      "version": "0.1.0",
+      "ref": "v0.2.0",
+      "version": "0.2.0",
       "icon": "shield",
       "category": "dev-tools",
       "tags": [
@@ -108,7 +108,13 @@
         "authentication"
       ],
       "has_config": true,
-      "bootstrap": false
+      "bootstrap": false,
+      "publisher": "TekFlox",
+      "resource_estimate": {
+        "cpu": "low",
+        "memory": "~20 MB",
+        "disk": "~5 MB"
+      }
     },
     {
       "id": "browser",
@@ -236,10 +242,10 @@
     {
       "id": "devctl",
       "name": "DevCtl",
-      "description": "Dev-control panel for the workspace \u2014 observe/control the workspace browser by talking CDP to the aw-app-browser container (live screenshot + navigation). Scaffold: first capability wired to aw-app-browser:9223.",
+      "description": "Dev-control panel for the workspace: (1) a piloted browser \u2014 observes and controls the aw-app-browser container over CDP (aw-app-browser:9223), live screenshot, screencast over a WebSocket, navigate, click/type/key/scroll, evaluate/inject JS; (2) a tab relay \u2014 remote JS eval into the USER's OWN live browser tab (moved from the aw-workspace monolith, ADR \"Apps Own Their Front + Back Routes\" Decision 5), with a [dev] top-nav toggle and an agent-driven local /eval + /tabs escape hatch. Runs standalone too (Decision 4). Backend routes under /api/apps/devctl; a devctl-browser MCP tool wrapper (piloted-browser navigate/click/type/eval/screenshot) is contributed for agents via mcp.json.",
       "repo": "tekflox/aw-app-devctl",
-      "ref": "master",
-      "version": "0.1.0",
+      "ref": "v0.5.0",
+      "version": "0.5.0",
       "icon": "monitor",
       "category": "dev-tools",
       "tags": [
@@ -262,8 +268,8 @@
       "name": "MCP Tools",
       "description": "Installs MCP helper tools for Agentic Workspace, starting with a ready-to-use Playwright MCP config for shared browser automation.",
       "repo": "tekflox/aw-app-mcp-tools",
-      "ref": "v0.5.0",
-      "version": "0.5.0",
+      "ref": "v0.6.1",
+      "version": "0.6.1",
       "icon": "plug",
       "category": "dev-tools",
       "tags": [
@@ -285,8 +291,8 @@
       "name": "Code Agent CLIs",
       "description": "Installs AI coding-agent CLIs into the workspace: Claude Code (claude), OpenAI Codex (codex), GitHub Copilot CLI (copilot), and Cursor's cursor-agent \u2014 each CLI still needs its own auth (e.g. `claude login`, `codex login`, `copilot`, `cursor-agent login`) run from a workspace terminal before use. Also owns the Agents nav menu (launch/resume sessions per CLI type) and the agent-session-history API/DB backing it \u2014 decoupled from aw-workspace core per the 2026-08-03 architecture decision.",
       "repo": "tekflox/aw-app-code-agent-clis",
-      "ref": "v0.4.0",
-      "version": "0.4.0",
+      "ref": "v0.7.0",
+      "version": "0.7.0",
       "icon": "plug",
       "category": "dev-tools",
       "tags": [
@@ -335,8 +341,8 @@
       "name": "Knowledge Base",
       "description": "Semantic search over project docs and skills, backed by Postgres/pgvector. Ported from the agentic-workspace monolith's Knowledge Base \u2014 file browser/editor, semantic + text search, code-map build jobs, and an MCP surface (search/update/delete_knowledge_base, search/load_skill) that aw-mcp-gateway picks up automatically.",
       "repo": "tekflox/aw-app-kb",
-      "ref": "v0.2.1",
-      "version": "0.2.1",
+      "ref": "v0.6.0",
+      "version": "0.6.0",
       "icon": "plug",
       "category": "dev-tools",
       "tags": [
@@ -362,6 +368,27 @@
       "category": "dev-tools",
       "tags": [
         "notion"
+      ],
+      "has_config": true,
+      "bootstrap": false,
+      "publisher": "TekFlox",
+      "resource_estimate": {
+        "cpu": "low",
+        "memory": "low",
+        "disk": "low"
+      }
+    },
+    {
+      "id": "tasks",
+      "name": "Scheduled Tasks",
+      "description": "Scheduled prompts/commands that fire into a reusable CLI session or run a cheap shell check and notify on a notable exit code. Migrated from the aw monolith (src/mcp/tasks.py + tools/agentic_output.py, src/api/task_manager.py + task_scheduler.py + routes/tasks.py, TasksTab.jsx).",
+      "repo": "tekflox/aw-app-tasks",
+      "ref": "v0.10.0",
+      "version": "0.10.0",
+      "icon": "plug",
+      "category": "dev-tools",
+      "tags": [
+        "tasks"
       ],
       "has_config": true,
       "bootstrap": false,
