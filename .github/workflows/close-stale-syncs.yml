@@ -1,0 +1,31 @@
+name: Close stale sync PRs
+
+# Event-driven, not a scheduled/cron task — Frederico's explicit call
+# (2026-08-04): a cron sweep was too aggressive/wasteful given how often
+# sync PRs land here. Runs on every PR event against master instead, so it
+# reacts the moment a newer sync for some app merges and makes an older
+# still-open sync/* PR for that SAME app redundant.
+#
+# Only ever closes a PR whose version bump master's apps.json already has
+# (>=) — never based on git "behind" status. A PR that's behind but still
+# represents real forward progress is left open for GitHub's own auto-merge
+# retry (or a manual `gh api -X PUT .../update-branch`) to catch up.
+on:
+  pull_request:
+    branches: [master]
+    types: [opened, synchronize, reopened]
+
+jobs:
+  close-stale:
+    runs-on: [self-hosted, aw-baremetal]
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python3 scripts/close_stale_syncs.py
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPOSITORY: ${{ github.repository }}
