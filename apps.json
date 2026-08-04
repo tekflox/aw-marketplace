@@ -341,8 +341,8 @@
       "name": "Knowledge Base",
       "description": "Semantic search over project docs and skills, backed by Postgres/pgvector. Ported from the agentic-workspace monolith's Knowledge Base \u2014 file browser/editor, semantic + text search, code-map build jobs, and an MCP surface (search/update/delete_knowledge_base, search/load_skill) that aw-mcp-gateway picks up automatically.",
       "repo": "tekflox/aw-app-kb",
-      "ref": "v0.4.0",
-      "version": "0.4.0",
+      "ref": "v0.5.0",
+      "version": "0.5.0",
       "icon": "plug",
       "category": "dev-tools",
       "tags": [
