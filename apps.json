@@ -93,11 +93,11 @@
     },
     {
       "id": "proxy",
-      "name": "AW Proxy",
-      "description": "Browser cookie proxy: the HTTP CONNECT proxy the AW Browser tunnels through, the /sync-cookies + /clear-cookies API the aw-sync browser extensions (Chrome + iOS/Safari, downloadable from the app's window) push cookies through, and encrypted persistence of chosen cookies in Postgres so they survive a proxy restart. aw-app-browser depends on this app for authentication.",
+      "name": "Proxy",
+      "description": "Browser cookie proxy: an HTTP CONNECT proxy the AW Browser tunnels through, plus the cookie-sync API (/sync-cookies, /clear-cookies) that the aw-sync browser extensions (Chrome + iOS/Safari) push the user's real-browser cookies through, and encrypted persistence of chosen cookies in Postgres so they survive a proxy restart. aw-app-browser depends on this app for authentication.",
       "repo": "tekflox/aw-app-proxy",
-      "ref": "master",
-      "version": "0.1.0",
+      "ref": "v0.2.0",
+      "version": "0.2.0",
       "icon": "shield",
       "category": "dev-tools",
       "tags": [
@@ -108,7 +108,13 @@
         "authentication"
       ],
       "has_config": true,
-      "bootstrap": false
+      "bootstrap": false,
+      "publisher": "TekFlox",
+      "resource_estimate": {
+        "cpu": "low",
+        "memory": "~20 MB",
+        "disk": "~5 MB"
+      }
     },
     {
       "id": "browser",
