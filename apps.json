@@ -383,8 +383,8 @@
       "name": "Scheduled Tasks",
       "description": "Scheduled prompts/commands that fire into a reusable CLI session or run a cheap shell check and notify on a notable exit code. Migrated from the aw monolith (src/mcp/tasks.py + tools/agentic_output.py, src/api/task_manager.py + task_scheduler.py + routes/tasks.py, TasksTab.jsx).",
       "repo": "tekflox/aw-app-tasks",
-      "ref": "v0.11.0",
-      "version": "0.11.0",
+      "ref": "v0.12.0",
+      "version": "0.12.0",
       "icon": "plug",
       "category": "dev-tools",
       "tags": [
