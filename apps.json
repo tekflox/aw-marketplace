@@ -297,8 +297,8 @@
       "name": "Code Agent CLIs",
       "description": "Installs AI coding-agent CLIs into the workspace: Claude Code (claude), OpenAI Codex (codex), GitHub Copilot CLI (copilot), and Cursor's cursor-agent \u2014 each CLI still needs its own auth (e.g. `claude login`, `codex login`, `copilot`, `cursor-agent login`) run from a workspace terminal before use. Also owns the Agents nav menu (launch/resume sessions per CLI type) and the agent-session-history API/DB backing it \u2014 decoupled from aw-workspace core per the 2026-08-03 architecture decision.",
       "repo": "tekflox/aw-app-code-agent-clis",
-      "ref": "v0.7.0",
-      "version": "0.7.0",
+      "ref": "v0.7.1",
+      "version": "0.7.1",
       "icon": "plug",
       "category": "dev-tools",
       "tags": [
@@ -389,8 +389,8 @@
       "name": "Scheduled Tasks",
       "description": "Scheduled prompts/commands that fire into a reusable CLI session or run a cheap shell check and notify on a notable exit code. Migrated from the aw monolith (src/mcp/tasks.py + tools/agentic_output.py, src/api/task_manager.py + task_scheduler.py + routes/tasks.py, TasksTab.jsx).",
       "repo": "tekflox/aw-app-tasks",
-      "ref": "v0.13.1",
-      "version": "0.13.1",
+      "ref": "v0.13.2",
+      "version": "0.13.2",
       "icon": "plug",
       "category": "dev-tools",
       "tags": [
