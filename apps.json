@@ -362,8 +362,8 @@
       "name": "Notion",
       "description": "Ports agentic-workspace's generic Notion MCP integration into aw-workspace: stores a Notion internal-integration token in the zero-knowledge secret store and generates the mcp.json entry (@notionhq/notion-mcp-server) that MCP Gateway scans, so any agent running in the workspace gets Notion tools through the gateway.",
       "repo": "tekflox/aw-app-notion",
-      "ref": "v0.2.0",
-      "version": "0.2.0",
+      "ref": "v0.2.1",
+      "version": "0.2.1",
       "icon": "plug",
       "category": "dev-tools",
       "tags": [
