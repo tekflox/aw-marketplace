@@ -398,6 +398,28 @@
         "memory": "low",
         "disk": "low"
       }
+    },
+    {
+      "id": "diff-tool",
+      "name": "Diff Tool",
+      "description": "Interactive git diff viewer + commit panel, decoupled from the monolith. Two entry points: an agent's show_diff MCP tool call, or the git repo nav's expand arrow. Multi-file tabs, unified/split view, GitHub-style collapsible context, inline word-diff highlighting, and an embedded Commit & Push panel.",
+      "repo": "tekflox/aw-app-diff-tool",
+      "ref": "v0.2.0",
+      "version": "0.2.0",
+      "icon": "plug",
+      "category": "dev-tools",
+      "tags": [
+        "diff",
+        "tool"
+      ],
+      "has_config": false,
+      "bootstrap": false,
+      "publisher": "TekFlox",
+      "resource_estimate": {
+        "cpu": "low",
+        "memory": "low",
+        "disk": "low"
+      }
     }
   ]
 }
