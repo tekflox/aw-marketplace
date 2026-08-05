@@ -274,8 +274,8 @@
       "name": "MCP Tools",
       "description": "Installs MCP helper tools for Agentic Workspace, starting with a ready-to-use Playwright MCP config for shared browser automation.",
       "repo": "tekflox/aw-app-mcp-tools",
-      "ref": "v0.6.1",
-      "version": "0.6.1",
+      "ref": "v0.6.2",
+      "version": "0.6.2",
       "icon": "plug",
       "category": "dev-tools",
       "tags": [
@@ -347,8 +347,8 @@
       "name": "Knowledge Base",
       "description": "Semantic search over project docs and skills, backed by Postgres/pgvector. Ported from the agentic-workspace monolith's Knowledge Base \u2014 file browser/editor, semantic + text search, code-map build jobs, and an MCP surface (search/update/delete_knowledge_base, search/load_skill) that aw-mcp-gateway picks up automatically.",
       "repo": "tekflox/aw-app-kb",
-      "ref": "v0.13.0",
-      "version": "0.13.0",
+      "ref": "v0.13.1",
+      "version": "0.13.1",
       "icon": "plug",
       "category": "Services",
       "tags": [
@@ -368,8 +368,8 @@
       "name": "Notion",
       "description": "Ports agentic-workspace's generic Notion MCP integration into aw-workspace: stores a Notion internal-integration token in the zero-knowledge secret store and generates the mcp.json entry (@notionhq/notion-mcp-server) that MCP Gateway scans, so any agent running in the workspace gets Notion tools through the gateway.",
       "repo": "tekflox/aw-app-notion",
-      "ref": "v0.2.0",
-      "version": "0.2.0",
+      "ref": "v0.2.1",
+      "version": "0.2.1",
       "icon": "plug",
       "category": "dev-tools",
       "tags": [
