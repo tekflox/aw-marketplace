@@ -136,7 +136,20 @@ jobs:
           # Idempotent PR, clean branch history: always rebuild the sync branch
           # from current master. Reusing squash-merged sync branches preserves
           # old commits in the PR commit list even when the diff is clean.
+          #
+          # REMOTE_SHA records the branch's real current tip (empty if it
+          # doesn't exist remotely yet, e.g. a closed-without-merge PR or a
+          # first-ever sync) so the force-with-lease push below can state an
+          # explicit expected value. Bare `--force-with-lease` (auto-detected
+          # from refs/remotes/origin/$BRANCH) was tried first but proved
+          # unreliable here even when that ref was freshly fetched and
+          # correct — it rejected every push with "stale info" regardless,
+          # which silently stalled the "git" app's catalog entry at v0.2.0
+          # for months. An explicit `--force-with-lease=$BRANCH:$REMOTE_SHA`
+          # verified reliable in testing and still rejects a genuine
+          # concurrent race (someone else pushing to $BRANCH mid-run).
           git fetch origin master
+          REMOTE_SHA=$(git ls-remote origin "refs/heads/$BRANCH" | cut -f1)
           git checkout -B "$BRANCH" origin/master
 
           set +e
@@ -164,7 +177,11 @@ jobs:
 
           git add apps.json
           git commit -m "chore(sync): ${APP_ID} -> ${NEW_TAG}"
-          git push -u origin "$BRANCH" --force-with-lease
+          if [ -n "$REMOTE_SHA" ]; then
+            git push -u origin "$BRANCH" --force-with-lease="$BRANCH:$REMOTE_SHA"
+          else
+            git push -u origin "$BRANCH" --force-with-lease="$BRANCH"
+          fi
           export APP_ID BRANCH
 
           python3 - <<'PY'
