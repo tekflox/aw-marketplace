@@ -152,10 +152,10 @@
     {
       "id": "presentations",
       "name": "Presentations",
-      "description": "HTML presentations created by agents (diffs, reports, dashboards) \u2014 top-bar gallery nav + a window that renders each presentation. Replaces the monolith's /ws/presentations feature and the aw-frontend static PresentationNav.",
+      "description": "HTML presentations created by agents (reports, diagrams, code reviews, images) \u2014 top-bar gallery nav + a window that renders each presentation. Replaces the monolith's /ws/presentations feature and the aw-frontend static PresentationNav. Diff viewing lives in the separate aw-app-diff-tool.",
       "repo": "tekflox/aw-app-presentations",
-      "ref": "v0.5.1",
-      "version": "0.5.1",
+      "ref": "v0.7.0",
+      "version": "0.7.0",
       "icon": "layout-dashboard",
       "category": "productivity",
       "tags": [
