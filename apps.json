@@ -452,10 +452,10 @@
     {
       "id": "remote-host-cli",
       "name": "Remote Host CLI",
-      "description": "Access the remote hosts linked to your aw-workspace account: installs an `aw-remote-hosts` CLI (status/exec/ps against the BYOD host linked via aw-remote-host) and contributes an MCP server so an agent can do the same, both scoped to only this account's own linked hosts.",
+      "description": "Access the remote hosts linked to your aw-workspace account: contributes an `aw-workspace-cli remote-hosts` command (status/exec/ps against the BYOD host linked via aw-remote-host) and an MCP server so an agent can do the same, both scoped to only this account's own linked hosts.",
       "repo": "tekflox/aw-app-remote-host-cli",
-      "ref": "v0.6.0",
-      "version": "0.6.0",
+      "ref": "v0.8.0",
+      "version": "0.8.0",
       "icon": "plug",
       "category": "dev-tools",
       "tags": [
