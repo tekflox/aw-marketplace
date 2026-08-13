@@ -16,9 +16,20 @@ on:
         type: string
         required: false
         default: ""
+      catalog_repo:
+        description: >-
+          Catalog repo to sync the entry into. Defaults to the PUBLIC
+          tekflox/aw-marketplace; a private app passes
+          tekflox/aw-marketplace-private. Only the catalog's apps.json comes
+          from here — the sync/bump scripts and the schema always come from
+          tekflox/aw-marketplace, so a private catalog carries nothing but
+          its own apps.json.
+        type: string
+        required: false
+        default: "tekflox/aw-marketplace"
     secrets:
       MARKETPLACE_SYNC_TOKEN:
-        description: "PAT (repo scope) used to push/PR into tekflox/aw-marketplace."
+        description: "PAT (repo scope) used to push/PR into the catalog repo."
         required: true
 
 jobs:
@@ -27,18 +38,69 @@ jobs:
     runs-on: [self-hosted, aw-baremetal]
     permissions:
       contents: write
+    env:
+      CATALOG_REPO: ${{ inputs.catalog_repo }}
     steps:
+      # A private app repo must never sync into the PUBLIC catalog. This is
+      # not hypothetical: aw-app-crispal (a private store's WordPress, its DB
+      # credentials and its MCP surface) called this workflow with no way to
+      # say otherwise, and the only thing that kept it out of the public
+      # catalog was the caller repo missing MARKETPLACE_SYNC_TOKEN — i.e. an
+      # accident. Granting that secret was all it would have taken, and one
+      # migration pass in Aug 2026 did exactly that. Derive the answer from
+      # the repo's own visibility so it cannot drift out of sync with a
+      # forgotten input.
+      #
+      # Deliberately a run step, not an `if:` guard. `github.event.repository`
+      # is only populated for some trigger types, and an expression that
+      # evaluates to null skips the step — a guard that silently does not run
+      # is worse than no guard, since it reads as "checked, fine". This asks
+      # the API and fails closed when the answer is anything but a clear "the
+      # app repo is public".
+      - name: Refuse to publish a private app to the public catalog
+        env:
+          GH_TOKEN: ${{ secrets.MARKETPLACE_SYNC_TOKEN }}
+          APP_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          if [ "$CATALOG_REPO" != "tekflox/aw-marketplace" ]; then
+            echo "Target is ${CATALOG_REPO} (not the public catalog) — nothing to check."
+            exit 0
+          fi
+          VISIBILITY=$(curl -fsS \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${APP_REPO}" \
+            | python3 -c "import json,sys;print(json.load(sys.stdin).get('private'))")
+          if [ "$VISIBILITY" != "False" ]; then
+            echo "::error::${APP_REPO} is private (or its visibility could not be" \
+                 "determined: '${VISIBILITY}') and this release targets the PUBLIC" \
+                 "catalog. Pass catalog_repo: tekflox/aw-marketplace-private."
+            exit 1
+          fi
+          echo "${APP_REPO} is public — publishing to the public catalog is fine."
+
       - name: Checkout app repo
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           token: ${{ secrets.MARKETPLACE_SYNC_TOKEN }}
 
-      - name: Checkout aw-marketplace scripts + catalog
+      - name: Checkout aw-marketplace scripts + schema
         uses: actions/checkout@v4
         with:
           repository: tekflox/aw-marketplace
           path: _marketplace
+          token: ${{ secrets.MARKETPLACE_SYNC_TOKEN }}
+
+      # Separate from _marketplace even when they are the same repo: the
+      # catalog is the thing this run COMMITS to, the scripts are what it
+      # runs, and conflating them is what made the target un-overridable.
+      - name: Checkout the target catalog
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ inputs.catalog_repo }}
+          path: _catalog
           token: ${{ secrets.MARKETPLACE_SYNC_TOKEN }}
 
       - uses: actions/setup-python@v5
@@ -126,7 +188,7 @@ jobs:
           APP_REPO: ${{ github.repository }}
         run: |
           set -euo pipefail
-          cd _marketplace
+          cd _catalog
           APP_ID=$(python3 -c "import json;print(json.load(open('../aw-app.json'))['id'])")
           BRANCH="sync/${APP_ID}"
 
@@ -153,7 +215,8 @@ jobs:
           git checkout -B "$BRANCH" origin/master
 
           set +e
-          python3 scripts/sync_catalog_entry.py ../aw-app.json apps.json "$NEW_TAG" --write
+          python3 ../_marketplace/scripts/sync_catalog_entry.py \
+            ../aw-app.json apps.json "$NEW_TAG" --write
           CHANGED=$?
           set -e
 
@@ -173,7 +236,7 @@ jobs:
           # wait for). Catching it here fails the release job itself instead
           # of landing an invalid entry as an open (or worse, merged) PR.
           pip install -q jsonschema
-          python3 tests/validate_apps.py
+          python3 ../_marketplace/tests/validate_apps.py apps.json
 
           git add apps.json
           git commit -m "chore(sync): ${APP_ID} -> ${NEW_TAG}"
@@ -196,6 +259,8 @@ jobs:
           new_tag = os.environ["NEW_TAG"]
           app_repo = os.environ["APP_REPO"]
           branch = os.environ["BRANCH"]
+          catalog_repo = os.environ["CATALOG_REPO"]
+          catalog_owner = catalog_repo.split("/", 1)[0]
           title = f"chore(sync): {app_id} -> {new_tag}"
           body = f"Automated sync from {app_repo}@{new_tag} via app-release.yml."
           api = "https://api.github.com"
@@ -217,15 +282,15 @@ jobs:
                   body = response.read()
                   return json.loads(body) if body else None
 
-          head = urllib.parse.quote(f"tekflox:{branch}", safe="")
-          prs = request("GET", f"/repos/tekflox/aw-marketplace/pulls?state=open&head={head}")
+          head = urllib.parse.quote(f"{catalog_owner}:{branch}", safe="")
+          prs = request("GET", f"/repos/{catalog_repo}/pulls?state=open&head={head}")
           if prs:
-              pr = request("PATCH", f"/repos/tekflox/aw-marketplace/pulls/{prs[0]['number']}", {
+              pr = request("PATCH", f"/repos/{catalog_repo}/pulls/{prs[0]['number']}", {
                   "title": title,
                   "body": body,
               })
           else:
-              pr = request("POST", "/repos/tekflox/aw-marketplace/pulls", {
+              pr = request("POST", f"/repos/{catalog_repo}/pulls", {
                   "title": title,
                   "body": body,
                   "base": "master",
@@ -252,6 +317,8 @@ jobs:
 
           token = os.environ["GH_TOKEN"]
           branch = os.environ["BRANCH"]
+          catalog_repo = os.environ["CATALOG_REPO"]
+          catalog_owner = catalog_repo.split("/", 1)[0]
           api = "https://api.github.com"
           graphql = "https://api.github.com/graphql"
 
@@ -289,8 +356,8 @@ jobs:
                   raise RuntimeError(payload["errors"])
               return payload["data"]
 
-          head = urllib.parse.quote(f"tekflox:{branch}", safe="")
-          prs = request("GET", f"/repos/tekflox/aw-marketplace/pulls?state=open&head={head}")
+          head = urllib.parse.quote(f"{catalog_owner}:{branch}", safe="")
+          prs = request("GET", f"/repos/{catalog_repo}/pulls?state=open&head={head}")
           if not prs:
               raise SystemExit(f"No open PR found for {branch}")
           pr = prs[0]
@@ -313,7 +380,7 @@ jobs:
               print(f"auto_merge_enabled=true pr_number={pr['number']}")
           except Exception as exc:
               print(f"auto_merge_unavailable={exc}; attempting immediate squash merge")
-              request("PUT", f"/repos/tekflox/aw-marketplace/pulls/{pr['number']}/merge", {
+              request("PUT", f"/repos/{catalog_repo}/pulls/{pr['number']}/merge", {
                   "merge_method": "squash",
               })
               print(f"merged=true pr_number={pr['number']}")
