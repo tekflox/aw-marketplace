@@ -6,8 +6,8 @@
       "name": "Git + GitHub CLI",
       "description": "Installs git and the GitHub CLI (gh) into the workspace, survives restarts, provides a settings panel for gh login (token stored in the zero-knowledge secret store), and serves the GitHub PR dashboard (open PRs for you and your team, plus repo status) the workspace nav reads.",
       "repo": "tekflox/aw-app-git",
-      "ref": "v0.15.1",
-      "version": "0.15.1",
+      "ref": "v0.16.0",
+      "version": "0.16.0",
       "icon": "git-branch",
       "category": "dev-tools",
       "tags": [
