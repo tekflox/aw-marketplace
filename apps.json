@@ -27,7 +27,7 @@
     {
       "id": "aws",
       "name": "AWS CLI",
-      "description": "Installs the AWS CLI v2 into the workspace and provides a settings panel for AWS credentials (access key, secret key, region, session token — applied via `aws configure`).",
+      "description": "Installs the AWS CLI v2 into the workspace and provides a settings panel for AWS credentials (access key, secret key, region, session token \u2014 applied via `aws configure`).",
       "repo": "tekflox/aw-app-aws",
       "ref": "v0.3.3",
       "version": "0.3.3",
@@ -152,7 +152,7 @@
     {
       "id": "presentations",
       "name": "Presentations",
-      "description": "HTML presentations created by agents (reports, diagrams, code reviews, images) — top-bar gallery nav + a window that renders each presentation. Replaces the monolith's /ws/presentations feature and the aw-frontend static PresentationNav. Diff viewing lives in the separate aw-app-diff-tool.",
+      "description": "HTML presentations created by agents (reports, diagrams, code reviews, images) \u2014 top-bar gallery nav + a window that renders each presentation. Replaces the monolith's /ws/presentations feature and the aw-frontend static PresentationNav. Diff viewing lives in the separate aw-app-diff-tool.",
       "repo": "tekflox/aw-app-presentations",
       "ref": "v0.16.0",
       "version": "0.16.0",
@@ -175,7 +175,7 @@
     {
       "id": "whiteboard",
       "name": "Whiteboard",
-      "description": "Persistent, live-synced HTML canvas — set/patch content, broadcast changes over a WebSocket to every open viewer, round-trip with a presentation. Migrated from the aw monolith (src/api/routes/whiteboard.py + whiteboard_manager.py + WhiteboardWindow.jsx).",
+      "description": "Persistent, live-synced HTML canvas \u2014 set/patch content, broadcast changes over a WebSocket to every open viewer, round-trip with a presentation. Migrated from the aw monolith (src/api/routes/whiteboard.py + whiteboard_manager.py + WhiteboardWindow.jsx).",
       "repo": "tekflox/aw-app-whiteboard",
       "ref": "v0.14.0",
       "version": "0.14.0",
@@ -198,7 +198,7 @@
     {
       "id": "mcp-gateway",
       "name": "MCP Gateway",
-      "description": "Share your workspace's tools with any AI agent, and reach tools from other workspaces in return. Install MCP Gateway and every tool your other apps expose becomes instantly callable — no per-app setup. Connect it to another gateway to pull in that workspace's tools too, with per-connection access tokens you control.",
+      "description": "Share your workspace's tools with any AI agent, and reach tools from other workspaces in return. Install MCP Gateway and every tool your other apps expose becomes instantly callable \u2014 no per-app setup. Connect it to another gateway to pull in that workspace's tools too, with per-connection access tokens you control.",
       "repo": "tekflox/aw-mcp-gateway",
       "ref": "v0.6.2",
       "version": "0.6.2",
@@ -224,10 +224,10 @@
     {
       "id": "hello",
       "name": "Hello World (App Template)",
-      "description": "TEMPLATE — a minimal, fully working decoupled app: installs one trivial CLI (`hello`, prints a configurable greeting) through the gated commands:install facade, contributes a backend sub-app (GET /hello + app-local WS /ws/echo under the app namespace) and a component-mode frontend bundle, and runs standalone too (ADR Decision 4/6). Tests and CI/marketplace release already wired. Rename everything marked TEMPLATE/hello before this becomes a real app — see README.md.",
+      "description": "TEMPLATE \u2014 a minimal, fully working decoupled app: installs one trivial CLI (`hello`, prints a configurable greeting) through the gated commands:install facade, contributes a backend sub-app (GET /hello + app-local WS /ws/echo under the app namespace) and a component-mode frontend bundle, and runs standalone too (ADR Decision 4/6). Tests and CI/marketplace release already wired. Rename everything marked TEMPLATE/hello before this becomes a real app \u2014 see README.md.",
       "repo": "tekflox/aw-app-template",
-      "ref": "v0.6.0",
-      "version": "0.6.0",
+      "ref": "v0.7.0",
+      "version": "0.7.0",
       "icon": "package",
       "category": "dev-tools",
       "tags": [
@@ -248,7 +248,7 @@
     {
       "id": "devctl",
       "name": "DevCtl",
-      "description": "Dev-control panel for the workspace: (1) a piloted browser — observes and controls the aw-app-browser container over CDP (aw-app-browser:9223), live screenshot, screencast over a WebSocket, navigate, click/type/key/scroll, evaluate/inject JS; (2) a tab relay — remote JS eval into the USER's OWN live browser tab (moved from the aw-workspace monolith, ADR \"Apps Own Their Front + Back Routes\" Decision 5), with a [dev] top-nav toggle and an agent-driven local /eval + /tabs escape hatch. Runs standalone too (Decision 4). Backend routes under /api/apps/devctl; a devctl-browser MCP tool wrapper (piloted-browser navigate/click/type/eval/screenshot) is contributed for agents via mcp.json.",
+      "description": "Dev-control panel for the workspace: (1) a piloted browser \u2014 observes and controls the aw-app-browser container over CDP (aw-app-browser:9223), live screenshot, screencast over a WebSocket, navigate, click/type/key/scroll, evaluate/inject JS; (2) a tab relay \u2014 remote JS eval into the USER's OWN live browser tab (moved from the aw-workspace monolith, ADR \"Apps Own Their Front + Back Routes\" Decision 5), with a [dev] top-nav toggle and an agent-driven local /eval + /tabs escape hatch. Runs standalone too (Decision 4). Backend routes under /api/apps/devctl; a devctl-browser MCP tool wrapper (piloted-browser navigate/click/type/eval/screenshot) is contributed for agents via mcp.json.",
       "repo": "tekflox/aw-app-devctl",
       "ref": "v0.9.2",
       "version": "0.9.2",
@@ -295,7 +295,7 @@
     {
       "id": "code-agent-clis",
       "name": "Code Agent CLIs",
-      "description": "Installs AI coding-agent CLIs into the workspace: Claude Code (claude), OpenAI Codex (codex), GitHub Copilot CLI (copilot), and Cursor's cursor-agent — each CLI still needs its own auth (e.g. `claude login`, `codex login`, `copilot`, `cursor-agent login`) run from a workspace terminal before use. Also owns the Agents nav menu (launch/resume sessions per CLI type) and the agent-session-history API/DB backing it — decoupled from aw-workspace core per the 2026-08-03 architecture decision.",
+      "description": "Installs AI coding-agent CLIs into the workspace: Claude Code (claude), OpenAI Codex (codex), GitHub Copilot CLI (copilot), and Cursor's cursor-agent \u2014 each CLI still needs its own auth (e.g. `claude login`, `codex login`, `copilot`, `cursor-agent login`) run from a workspace terminal before use. Also owns the Agents nav menu (launch/resume sessions per CLI type) and the agent-session-history API/DB backing it \u2014 decoupled from aw-workspace core per the 2026-08-03 architecture decision.",
       "repo": "tekflox/aw-app-code-agent-clis",
       "ref": "v0.7.1",
       "version": "0.7.1",
@@ -345,7 +345,7 @@
     {
       "id": "kb",
       "name": "Knowledge Base",
-      "description": "Semantic search over project docs and skills, backed by Postgres/pgvector. Ported from the agentic-workspace monolith's Knowledge Base — file browser/editor, semantic + text search, code-map build jobs, and an MCP surface (search/update/delete_knowledge_base, search/load_skill) that aw-mcp-gateway picks up automatically.",
+      "description": "Semantic search over project docs and skills, backed by Postgres/pgvector. Ported from the agentic-workspace monolith's Knowledge Base \u2014 file browser/editor, semantic + text search, code-map build jobs, and an MCP surface (search/update/delete_knowledge_base, search/load_skill) that aw-mcp-gateway picks up automatically.",
       "repo": "tekflox/aw-app-kb",
       "ref": "v0.14.1",
       "version": "0.14.1",
@@ -498,7 +498,7 @@
     {
       "id": "remote-screen",
       "name": "Remote Screen",
-      "description": "Remote screens in the browser, three protocols behind one viewer: VNC (noVNC over a raw WebSocket->TCP byte bridge), RDP (same bridge, pending a browser-side client), and Android (live ~2 fps screen mirror + tap/swipe/text/key input over the remote-agent exec channel — no VNC server involved). Hosts live in this app's own Postgres table with per-app SQL migrations; passwords in the workspace secret store. Ports the monolith's src/api/routes/remote_desktop.py + android_viewer.py + RemoteDesktopWindow.jsx.",
+      "description": "Remote screens in the browser, three protocols behind one viewer: VNC (noVNC over a raw WebSocket->TCP byte bridge), RDP (same bridge, pending a browser-side client), and Android (live ~2 fps screen mirror + tap/swipe/text/key input over the remote-agent exec channel \u2014 no VNC server involved). Hosts live in this app's own Postgres table with per-app SQL migrations; passwords in the workspace secret store. Ports the monolith's src/api/routes/remote_desktop.py + android_viewer.py + RemoteDesktopWindow.jsx.",
       "repo": "tekflox/aw-app-remote-screen",
       "ref": "v0.3.0",
       "version": "0.3.0",
@@ -520,7 +520,7 @@
     {
       "id": "tunnel",
       "name": "Tunnel",
-      "description": "Named local TCP endpoints that forward to a destination, so consumers point at 127.0.0.1:<port> and never learn what is on the other side. Two destination kinds: a custom IP:port (a plain TCP proxy, working today) and a linked aw-remote-host (needs tcp_* frames on the /link tunnel — not shipped yet, and the UI says so rather than pretending). Each tunnel chooses its own bind address, which is what decides who may use it.",
+      "description": "Named local TCP endpoints that forward to a destination, so consumers point at 127.0.0.1:<port> and never learn what is on the other side. Two destination kinds: a custom IP:port (a plain TCP proxy, working today) and a linked aw-remote-host (needs tcp_* frames on the /link tunnel \u2014 not shipped yet, and the UI says so rather than pretending). Each tunnel chooses its own bind address, which is what decides who may use it.",
       "repo": "tekflox/aw-app-tunnel",
       "ref": "v0.2.0",
       "version": "0.2.0",
