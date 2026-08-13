@@ -52,8 +52,8 @@
       "name": "Google Cloud CLI",
       "description": "Installs the Google Cloud CLI (`gcloud`) into the workspace and provides a settings panel for project/account defaults and optional service-account JSON setup.",
       "repo": "tekflox/aw-app-google-cloud",
-      "ref": "v0.3.1",
-      "version": "0.3.1",
+      "ref": "v0.4.0",
+      "version": "0.4.0",
       "icon": "cloud",
       "category": "dev-tools",
       "tags": [
