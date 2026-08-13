@@ -500,8 +500,8 @@
       "name": "Remote Screen",
       "description": "Remote screens in the browser, three protocols behind one viewer: VNC (noVNC over a raw WebSocket->TCP byte bridge), RDP (same bridge, pending a browser-side client), and Android (live ~2 fps screen mirror + tap/swipe/text/key input over the remote-agent exec channel \u2014 no VNC server involved). Hosts live in this app's own Postgres table with per-app SQL migrations; passwords in the workspace secret store. Ports the monolith's src/api/routes/remote_desktop.py + android_viewer.py + RemoteDesktopWindow.jsx.",
       "repo": "tekflox/aw-app-remote-screen",
-      "ref": "v0.11.0",
-      "version": "0.11.0",
+      "ref": "v0.12.0",
+      "version": "0.12.0",
       "icon": "plug",
       "category": "dev-tools",
       "tags": [
