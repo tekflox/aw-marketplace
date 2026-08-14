@@ -154,8 +154,8 @@
       "name": "Presentations",
       "description": "HTML presentations created by agents (reports, diagrams, code reviews, images) \u2014 top-bar gallery nav + a window that renders each presentation. Replaces the monolith's /ws/presentations feature and the aw-frontend static PresentationNav. Diff viewing lives in the separate aw-app-diff-tool.",
       "repo": "tekflox/aw-app-presentations",
-      "ref": "v0.18.0",
-      "version": "0.18.0",
+      "ref": "v0.19.0",
+      "version": "0.19.0",
       "icon": "layout-dashboard",
       "category": "productivity",
       "tags": [
