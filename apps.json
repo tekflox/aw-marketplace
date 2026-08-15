@@ -639,6 +639,28 @@
         "memory": "low",
         "disk": "low"
       }
+    },
+    {
+      "id": "ssh",
+      "name": "SSH",
+      "description": "Contributes `aw-workspace-cli ssh` and `aw-workspace-cli rsync`: the real tools, with the private key or password fetched from the workspace vault (aw-app-secrets) and injected into an ephemeral ssh-agent, so the caller \u2014 usually an agent \u2014 connects without ever seeing the credential. Arguments are ssh's/rsync's own; this app only adds `--aw-*` flags.",
+      "repo": "tekflox/aw-app-ssh",
+      "ref": "v0.2.0",
+      "version": "0.2.0",
+      "icon": "plug",
+      "category": "dev-tools",
+      "tags": [
+        "ssh",
+        "rsync"
+      ],
+      "has_config": false,
+      "bootstrap": true,
+      "publisher": "TekFlox",
+      "resource_estimate": {
+        "cpu": "low",
+        "memory": "low",
+        "disk": "low"
+      }
     }
   ]
 }
