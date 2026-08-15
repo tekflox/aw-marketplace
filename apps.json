@@ -725,6 +725,28 @@
         "memory": "~600 MB",
         "disk": "~1 GB"
       }
+    },
+    {
+      "id": "call-agent",
+      "name": "Call Agent",
+      "description": "Talk to your workspace agent out loud. Open the Call window, hit call, and speak \u2014 your voice is transcribed, sent to the agent you picked, and the reply is streamed back and spoken to you in your own language. Keeps the conversation going across calls instead of starting from scratch every time.",
+      "repo": "tekflox/aw-app-call-agent",
+      "ref": "v0.2.0",
+      "version": "0.2.0",
+      "icon": "plug",
+      "category": "dev-tools",
+      "tags": [
+        "call",
+        "agent"
+      ],
+      "has_config": true,
+      "bootstrap": false,
+      "publisher": "TekFlox",
+      "resource_estimate": {
+        "cpu": "low",
+        "memory": "low",
+        "disk": "low"
+      }
     }
   ]
 }
