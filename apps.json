@@ -602,8 +602,8 @@
       "name": "UX-Proto",
       "description": "Agent-piloted visual prototyping \u2014 write real HTML/CSS/JS + a mock Python backend per project, with live hot-reload, driven entirely via MCP tools.",
       "repo": "tekflox/aw-app-ux-proto",
-      "ref": "v0.3.0",
-      "version": "0.3.0",
+      "ref": "v0.4.0",
+      "version": "0.4.0",
       "icon": "plug",
       "category": "dev-tools",
       "tags": [
@@ -615,7 +615,7 @@
       "publisher": "TekFlox",
       "resource_estimate": {
         "cpu": "medium",
-        "memory": "~800 MB",
+        "memory": "~1 GB",
         "disk": "~1.5 GB"
       }
     }
