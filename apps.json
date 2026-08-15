@@ -602,8 +602,8 @@
       "name": "UX-Proto",
       "description": "Agent-piloted visual prototyping \u2014 write real HTML/CSS/JS + a mock Python backend per project, with live hot-reload, driven entirely via MCP tools.",
       "repo": "tekflox/aw-app-ux-proto",
-      "ref": "v0.2.0",
-      "version": "0.2.0",
+      "ref": "v0.3.0",
+      "version": "0.3.0",
       "icon": "plug",
       "category": "dev-tools",
       "tags": [
