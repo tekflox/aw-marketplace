@@ -688,8 +688,8 @@
       "name": "Home Assistant",
       "description": "Runs Home Assistant in your workspace \u2014 control lights, speakers, Alexa/Echo devices and sensors, read the state of your home, and let agents do the same. Opens as a window in the Apps grid, keeps its whole configuration and history on the workspace disk, and comes with the Amazon Alexa integration preinstalled.",
       "repo": "tekflox/aw-app-home-assistant",
-      "ref": "v0.5.2",
-      "version": "0.5.2",
+      "ref": "v0.5.3",
+      "version": "0.5.3",
       "icon": "plug",
       "category": "dev-tools",
       "tags": [
