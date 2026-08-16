@@ -29,8 +29,8 @@
       "name": "AWS CLI",
       "description": "Installs the AWS CLI v2 into the workspace and provides a settings panel for AWS credentials (access key, secret key, region, session token \u2014 applied via `aws configure`).",
       "repo": "tekflox/aw-app-aws",
-      "ref": "v0.4.0",
-      "version": "0.4.0",
+      "ref": "v0.4.1",
+      "version": "0.4.1",
       "icon": "cloud",
       "category": "dev-tools",
       "tags": [
