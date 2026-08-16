@@ -123,9 +123,15 @@ jobs:
           if [ -f requirements-dev.txt ]; then
             pip install -q -r requirements-dev.txt
           fi
-          if [ -f tests/validate_manifest.py ]; then
-            python3 tests/validate_manifest.py
-          fi
+          # Unconditional, against the CANONICAL schema+validator in this
+          # repo. It used to be `if [ -f tests/validate_manifest.py ]`, run
+          # against a copy of the schema inside the app repo — 28 copies in 10
+          # drifted versions, and an app that simply lacked the file published
+          # with no validation at all. aw-app-architecture released green while
+          # aw-app-kb failed on the very same permission, purely because one of
+          # them happened to ship the script.
+          python3 _marketplace/scripts/validate_manifest.py aw-app.json \
+            --schema _marketplace/schemas/aw-app.schema.json
           if compgen -G "tests/test_*.py" > /dev/null; then
             python3 -m pytest tests/ -q
           fi
