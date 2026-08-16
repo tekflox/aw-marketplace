@@ -177,8 +177,8 @@
       "name": "Whiteboard",
       "description": "Persistent, live-synced HTML canvas \u2014 set/patch content, broadcast changes over a WebSocket to every open viewer, round-trip with a presentation. Migrated from the aw monolith (src/api/routes/whiteboard.py + whiteboard_manager.py + WhiteboardWindow.jsx).",
       "repo": "tekflox/aw-app-whiteboard",
-      "ref": "v0.14.1",
-      "version": "0.14.1",
+      "ref": "v0.14.2",
+      "version": "0.14.2",
       "icon": "square",
       "category": "productivity",
       "tags": [
