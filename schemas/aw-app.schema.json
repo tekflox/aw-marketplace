@@ -569,6 +569,26 @@
               }
             }
           }
+        },
+        "doctor": {
+          "type": "array",
+          "description": "Self-checks this app offers to `aw-workspace-cli doctor`. Each entry names a mount-relative GET route on the app's own surface that answers {\"ok\": bool, ...}. Core cannot know what 'degraded' means for an app it was never built against, so the app answers for itself.",
+          "items": {
+            "type": "object",
+            "required": [
+              "route"
+            ],
+            "properties": {
+              "route": {
+                "type": "string",
+                "pattern": "^/"
+              },
+              "label": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
         }
       }
     },
