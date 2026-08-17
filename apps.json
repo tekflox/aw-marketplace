@@ -797,8 +797,8 @@
       "name": "Google Workspace MCP",
       "description": "Ports agentic-workspace's aw-google-workspace integration into aw-workspace: runs the community workspace-mcp server (taylorwilsdon/google_workspace_mcp) as a managed background service and registers it with MCP Gateway, giving every agent Gmail, Drive, Calendar, Docs, Sheets, Tasks and Contacts tools behind one Google OAuth token.",
       "repo": "tekflox/aw-app-google-workspace-mcp",
-      "ref": "v0.2.0",
-      "version": "0.2.0",
+      "ref": "v0.3.0",
+      "version": "0.3.0",
       "icon": "plug",
       "category": "dev-tools",
       "tags": [
