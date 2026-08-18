@@ -878,6 +878,27 @@
         "memory": "low",
         "disk": "low"
       }
+    },
+    {
+      "id": "travel",
+      "name": "Travel",
+      "description": "Cheapest-window flight search: give a rough departure/return date and it fans a background search across every nearby date combination to find the cheapest fare, instead of you checking one date pair at a time. Direct Google Flights API access via the fli library \u2014 no scraping, no browser.",
+      "repo": "tekflox/aw-app-travel",
+      "ref": "v0.2.0",
+      "version": "0.2.0",
+      "icon": "plug",
+      "category": "dev-tools",
+      "tags": [
+        "travel"
+      ],
+      "has_config": false,
+      "bootstrap": false,
+      "publisher": "TekFlox",
+      "resource_estimate": {
+        "cpu": "low",
+        "memory": "low",
+        "disk": "low"
+      }
     }
   ]
 }
