@@ -774,10 +774,10 @@
     {
       "id": "mobile",
       "name": "AW Mobile",
-      "description": "The workspace half of aw-mobile \u2014 the AW iPhone app, the Apple Watch app and the Meta glasses webapp. Installing it into a workspace creates the agents those clients talk to (Sonnet / Opus / Fable) in that tenant's Agents Platform, plus the aw-agent-watch skill that tells them how to answer on a 40mm screen or through text-to-speech. Nothing else in this workspace knows that a reply read aloud must carry no markdown; this app is where that contract lives.",
+      "description": "Your Apple Health history, in a window. Nine years of heart rate, sleep, steps, workouts and where you were \u2014 charted by day, week or month, with a drill-down to the individual readings. Also the workspace half of aw-mobile: installing it creates the agents the iPhone, Apple Watch and Meta glasses talk to, tuned to answer on a 40mm screen or read aloud.",
       "repo": "tekflox/aw-app-mobile",
-      "ref": "v0.2.0",
-      "version": "0.2.0",
+      "ref": "v0.4.0",
+      "version": "0.4.0",
       "icon": "plug",
       "category": "dev-tools",
       "tags": [
