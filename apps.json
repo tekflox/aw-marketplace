@@ -774,10 +774,10 @@
     {
       "id": "mobile",
       "name": "AW Mobile",
-      "description": "Your Apple Health history, in a window. Nine years of heart rate, sleep, steps, workouts and where you were \u2014 charted by day, week or month, with a drill-down to the individual readings. Also the workspace half of aw-mobile: installing it creates the agents the iPhone, Apple Watch and Meta glasses talk to, tuned to answer on a 40mm screen or read aloud.",
+      "description": "Your Apple Health history and where you've been, in a window and in your agents' hands. Nine years of heart rate, sleep, steps and workouts charted by day, week or month with a drill-down to individual readings \u2014 plus 13 MCP tools so an agent can answer \"where was I on Tuesday?\" or \"how did I sleep?\", save a place by name, and log a meal or a symptom. Also the workspace half of aw-mobile: installing it creates the agents the iPhone, Apple Watch and Meta glasses talk to.",
       "repo": "tekflox/aw-app-mobile",
-      "ref": "v0.6.0",
-      "version": "0.6.0",
+      "ref": "v0.8.0",
+      "version": "0.8.0",
       "icon": "plug",
       "category": "dev-tools",
       "tags": [
