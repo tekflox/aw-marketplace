@@ -905,8 +905,8 @@
       "name": "Android Studio",
       "description": "Automate any Android device or emulator over ADB \u2014 tap, swipe, type, screenshot, install/inspect apps, push and pull files \u2014 reached through a linked host via aw-remote-hosts. No fixed machine: point it at whichever remote host and adb binary you configure, per-call overrides included.",
       "repo": "tekflox/aw-app-android-studio",
-      "ref": "v0.3.0",
-      "version": "0.3.0",
+      "ref": "v0.4.0",
+      "version": "0.4.0",
       "icon": "plug",
       "category": "dev-tools",
       "tags": [
