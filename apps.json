@@ -822,8 +822,8 @@
       "repo": "tekflox/aw-app-whatsapp",
       "ref": "v0.4.0",
       "version": "0.4.0",
-      "icon": "plug",
-      "category": "dev-tools",
+      "icon": "message-circle",
+      "category": "Services",
       "tags": [
         "whatsapp"
       ],
