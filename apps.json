@@ -519,8 +519,8 @@
       "name": "Maintenance Agents",
       "description": "The workspace's own maintenance crew, shipped as one installable unit: the System Analyst agent (daily architecture / silent-degradation / resilience / agent-run audit that opens a Kanban card per finding), the skill defining its contract, and the schedules that drive it \u2014 plus a cheap `aw-workspace-cli doctor` watch that only speaks up when something is actually degraded. Ported from the agentic-workspace monolith's aw-system-analyst skill, retargeted from SigNoz/awserv/Notion-by-curl onto the surfaces this workspace actually has.",
       "repo": "tekflox/aw-app-maintenance-agents",
-      "ref": "v0.6.0",
-      "version": "0.6.0",
+      "ref": "v0.7.0",
+      "version": "0.7.0",
       "icon": "plug",
       "category": "dev-tools",
       "tags": [
