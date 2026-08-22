@@ -101,7 +101,7 @@
       "type": "array",
       "items": {
         "type": "string",
-        "pattern": "^(agents:contribute|commands:install|containers:manage|db:own\\-tables|fs:workspace\\-data|fs:workspace\\-read|host:device\\-binder|host:device\\-fuse|host:device\\-kvm|host:device\\-tun|host:privileged|mcp:register\\-gateway|net:outbound|notifications:send|repos:contribute|routes:local|routes:register|secrets:own|service:manage|tasks:contribute|ui:code|watchdog:tasks|config:extend:[a-z0-9-]+|ui:slots:[a-z0-9.:_-]+)$",
+        "pattern": "^(agents:contribute|commands:install|containers:manage|db:own\\-tables|fs:workspace\\-data|fs:workspace\\-read|fs:workspace\\-write|host:device\\-binder|host:device\\-fuse|host:device\\-kvm|host:device\\-tun|host:privileged|mcp:register\\-gateway|net:outbound|notifications:send|repos:contribute|routes:local|routes:register|secrets:own|service:manage|tasks:contribute|ui:code|watchdog:tasks|config:extend:[a-z0-9-]+|ui:slots:[a-z0-9.:_-]+)$",
         "description": "One capability from aw-workspace's catalog (src/apps/capabilities.py). This pattern is GENERATED from that catalog \u2014 aw-workspace's test_capabilities.py fails if the two drift, because a capability the schema has never heard of fails an app's release with a regex nobody recognises as the real problem."
       }
     },
