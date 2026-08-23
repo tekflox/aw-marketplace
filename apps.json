@@ -927,8 +927,8 @@
       "name": "Plaud",
       "description": "Browse your Plaud AI recorder notes without leaving the workspace: see every recording, play or download the original audio, and read the transcript and AI summary \u2014 plus the 5 aw-plaud MCP tools an agent can use to pull the same data.",
       "repo": "tekflox/aw-app-plaud",
-      "ref": "v0.3.0",
-      "version": "0.3.0",
+      "ref": "v0.4.0",
+      "version": "0.4.0",
       "icon": "plug",
       "category": "dev-tools",
       "tags": [
