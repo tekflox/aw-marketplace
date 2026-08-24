@@ -710,8 +710,8 @@
       "name": "Call Agent",
       "description": "Talk to your workspace agent out loud. Open the Call window, hit call, and speak \u2014 your voice is transcribed, sent to the agent you picked, and the reply is streamed back and spoken to you in your own language. Keeps the conversation going across calls instead of starting from scratch every time.",
       "repo": "tekflox/aw-app-call-agent",
-      "ref": "v0.15.0",
-      "version": "0.15.0",
+      "ref": "v0.16.0",
+      "version": "0.16.0",
       "icon": "plug",
       "category": "dev-tools",
       "tags": [
