@@ -63,6 +63,19 @@
         "port": {
           "type": "integer"
         },
+        "publish": {
+          "type": "array",
+          "description": "Host port bindings for non-HTTP protocols required by a Tier-2 app, including UDP and equal-sized ranges.",
+          "items": {
+            "type": "object",
+            "required": ["container"],
+            "properties": {
+              "container": {"oneOf": [{"type": "integer"}, {"type": "string"}]},
+              "host": {"oneOf": [{"type": "integer"}, {"type": "string"}]},
+              "protocol": {"enum": ["tcp", "udp"], "default": "tcp"}
+            }
+          }
+        },
         "standalone": {
           "type": "object",
           "description": "ADR Decision 4 (adr-app-front-back-routes-dual-mode.md) \u2014 optional, tolerated forward-compatibly. Declares this app is runnable via `python -m <module>` outside the workspace runtime.",
