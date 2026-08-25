@@ -1006,6 +1006,29 @@
         "memory": "low",
         "disk": "low"
       }
+    },
+    {
+      "id": "aw-app-portrait",
+      "name": "AI Portrait",
+      "description": "Turn a tablet into a living AI photo frame: meet the people in front of its camera, organize their portraits, and place friends and family in delightful new scenes.",
+      "repo": "tekflox/aw-app-portrait",
+      "ref": "v0.2.0",
+      "version": "0.2.0",
+      "icon": "plug",
+      "category": "dev-tools",
+      "tags": [
+        "aw",
+        "app",
+        "portrait"
+      ],
+      "has_config": true,
+      "bootstrap": false,
+      "publisher": "TekFlox",
+      "resource_estimate": {
+        "cpu": "medium",
+        "memory": "medium",
+        "disk": "medium"
+      }
     }
   ]
 }
