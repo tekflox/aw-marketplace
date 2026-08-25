@@ -574,6 +574,20 @@
                 }
               }
             },
+            "workflows": {
+              "type": "array",
+              "description": "Workflows the app seeds on install \u2014 a real kind in aw-workspace's src/apps/agents.py KINDS since it picked up 'workflows'/'evals'. Missing here until 2026-08-25, the same gap agent_flows had below: aw-app-agents-platform-runners could not have passed validation had validation been running.",
+              "items": {
+                "type": "object"
+              }
+            },
+            "evals": {
+              "type": "array",
+              "description": "Evals the app seeds on install \u2014 see the workflows entry above for why this was missing.",
+              "items": {
+                "type": "object"
+              }
+            },
             "agent_flows": {
               "type": "array",
               "description": "Agents Flow graphs the app seeds on install \u2014 a real kind in aw-workspace's src/apps/agents.py KINDS. Missing here until 2026-08-16, so aw-app-devteam (which ships one) could not have passed validation had validation been running.",
