@@ -1029,6 +1029,28 @@
         "memory": "medium",
         "disk": "medium"
       }
+    },
+    {
+      "id": "roblox-genie",
+      "name": "Roblox Genie",
+      "description": "The lamp-genie NPC any player can chat with in the aw-roblox game: grants small wishes live (spawn objects, move/summon NPCs) and files a Kanban card for bigger ones. Split out of the Roblox app as its own package so the chat-injectable surface a random player talks to never shares a permission boundary with Frederico's full pilot tools (scale_object, kick_players, world lighting).",
+      "repo": "tekflox/aw-app-roblox-genie",
+      "ref": "v0.2.0",
+      "version": "0.2.0",
+      "icon": "plug",
+      "category": "dev-tools",
+      "tags": [
+        "roblox",
+        "genie"
+      ],
+      "has_config": true,
+      "bootstrap": false,
+      "publisher": "TekFlox",
+      "resource_estimate": {
+        "cpu": "low",
+        "memory": "low",
+        "disk": "low"
+      }
     }
   ]
 }
