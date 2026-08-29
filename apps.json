@@ -1078,8 +1078,8 @@
       "name": "Remote Host Terminal",
       "description": "Open interactive terminals on every remote host linked to your account, with multiple sessions side by side in one workspace window.",
       "repo": "tekflox/aw-app-remote-host-terminal",
-      "ref": "v0.2.0",
-      "version": "0.2.0",
+      "ref": "v0.3.0",
+      "version": "0.3.0",
       "icon": "plug",
       "category": "dev-tools",
       "tags": [
