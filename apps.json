@@ -1057,8 +1057,8 @@
       "name": "SigNoz",
       "description": "Self-hosted observability for this workspace \u2014 traces, metrics and logs in one dashboard, with an OTLP endpoint any instrumented service can send to. Your own instance, your own data, no shared central collector.",
       "repo": "tekflox/aw-app-signoz",
-      "ref": "v0.3.1",
-      "version": "0.3.1",
+      "ref": "v0.4.0",
+      "version": "0.4.0",
       "icon": "plug",
       "category": "dev-tools",
       "tags": [
