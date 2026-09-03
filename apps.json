@@ -127,8 +127,8 @@
       "name": "Browser",
       "description": "Chromium for AW workspaces with an interactive noVNC screen, CDP automation endpoint, workspace cookie-proxy support, and configurable window size.",
       "repo": "tekflox/aw-app-browser",
-      "ref": "v0.12.1",
-      "version": "0.12.1",
+      "ref": "v0.13.0",
+      "version": "0.13.0",
       "icon": "globe",
       "category": "dev-tools",
       "tags": [
