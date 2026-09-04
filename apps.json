@@ -1095,6 +1095,28 @@
         "memory": "low",
         "disk": "low"
       }
+    },
+    {
+      "id": "windows-pilot",
+      "name": "Windows Pilot",
+      "description": "Pilot a real Windows desktop from any agent in this workspace \u2014 list and focus windows, screenshot the screen, click, type and press keys \u2014 plus a Playwright that drives a persistent browser profile on that machine, so the agent works inside the user's own logged-in sessions. Reaches the machine through aw-remote-hosts; no fixed host, every setting is per-call overridable.",
+      "repo": "tekflox/aw-app-windows-pilot",
+      "ref": "v0.3.0",
+      "version": "0.3.0",
+      "icon": "plug",
+      "category": "dev-tools",
+      "tags": [
+        "windows",
+        "pilot"
+      ],
+      "has_config": true,
+      "bootstrap": false,
+      "publisher": "TekFlox",
+      "resource_estimate": {
+        "cpu": "low",
+        "memory": "low",
+        "disk": "low"
+      }
     }
   ]
 }
