@@ -1117,6 +1117,28 @@
         "memory": "low",
         "disk": "low"
       }
+    },
+    {
+      "id": "apple-automation",
+      "name": "Apple Automation",
+      "description": "Drive the iOS Simulator on a linked macOS host semantically \u2014 read accessibility labels/identifiers and tap, type and gesture BY IDENTIFIER instead of pixel coordinates. Replaces the VNC pixel-coordinate workaround for iOS bug repro. Reached through aw-remote-hosts; no fixed machine, every setting is per-call overridable.",
+      "repo": "tekflox/aw-app-apple-automation",
+      "ref": "v0.2.0",
+      "version": "0.2.0",
+      "icon": "plug",
+      "category": "dev-tools",
+      "tags": [
+        "apple",
+        "automation"
+      ],
+      "has_config": true,
+      "bootstrap": false,
+      "publisher": "TekFlox",
+      "resource_estimate": {
+        "cpu": "low",
+        "memory": "low",
+        "disk": "low"
+      }
     }
   ]
 }
