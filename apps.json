@@ -863,8 +863,8 @@
       "name": "Weather",
       "description": "Current conditions and a daily forecast for any place on Earth, by latitude/longitude \u2014 through Open-Meteo, a free API with no key and no account. Ports agentic-workspace's aw-open-meteo MCP into aw-workspace. Pair with aw-google-maps' geocode_address, or a mobile companion app's get_location, to resolve a place name into coordinates first.",
       "repo": "tekflox/aw-app-weather",
-      "ref": "v0.3.0",
-      "version": "0.3.0",
+      "ref": "v0.4.0",
+      "version": "0.4.0",
       "icon": "plug",
       "category": "dev-tools",
       "tags": [
