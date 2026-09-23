@@ -1181,6 +1181,31 @@
         "memory": "low",
         "disk": "low"
       }
+    },
+    {
+      "id": "aw-app-uc-phd",
+      "name": "UC PhD Projects",
+      "description": "Explore every research project at CISUC / UC DEI \u2014 400 of them \u2014 as interactive charts and a searchable catalogue. See which research groups run what, where the money comes from and goes, how project starts are spread over the years, who coordinates the most, and the biggest projects in each group. Open any project for its synopsis, budgets, partners, keywords, people and every field the site publishes about it.",
+      "repo": "fredericowu/aw-app-uc-phd",
+      "ref": "v0.1.0",
+      "version": "0.1.0",
+      "icon": "chart-bar",
+      "category": "dev-tools",
+      "tags": [
+        "uc",
+        "phd",
+        "cisuc",
+        "projects",
+        "research"
+      ],
+      "has_config": false,
+      "bootstrap": false,
+      "publisher": "fredericowu",
+      "resource_estimate": {
+        "cpu": "low",
+        "memory": "low",
+        "disk": "low"
+      }
     }
   ]
 }
