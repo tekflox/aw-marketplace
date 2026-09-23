@@ -1164,10 +1164,10 @@
     {
       "id": "marketing",
       "name": "Marketing",
-      "description": "Turns a product shortlist into a paid-social campaign the human still has to press play on. Registers Meta's own hosted Ads MCP server (mcp.facebook.com/ads) as a gateway upstream with your access token, and adds four deterministic, network-free tools of its own \u2014 score a catalog against a collection hint, draft a campaign plan, build a validated carousel creative, and keep an append-only ledger of what was launched. It never creates a campaign (Meta's tools do) and never reads a catalog (the store's app does); campaigns are always created PAUSED and activated by a human in Ads Manager.",
+      "description": "Turns a product shortlist into a paid-social campaign the human still has to press play on \u2014 or ask for directly. Registers Meta's own hosted Ads MCP server (mcp.facebook.com/ads) as a gateway upstream with your access token, and adds five tools of its own \u2014 score a catalog against a collection hint, draft a campaign plan, build a validated carousel creative, keep an append-only ledger of what was launched, and (the one tool that makes a network call) activate a campaign, but only behind a real human approval request, never on the agent's own judgment. It never creates a campaign (Meta's tools do) and never reads a catalog (the store's app does); campaigns are always created PAUSED, and activating one is always a human's call \u2014 in Ads Manager, or through this app's own approval-gated tool when they ask directly.",
       "repo": "tekflox/aw-app-marketing",
-      "ref": "v0.3.0",
-      "version": "0.3.0",
+      "ref": "v0.4.0",
+      "version": "0.4.0",
       "icon": "plug",
       "category": "dev-tools",
       "tags": [
