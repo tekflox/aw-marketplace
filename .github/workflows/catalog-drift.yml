@@ -1,0 +1,44 @@
+name: Catalog drift
+
+# Weekly check that no apps.json entry is behind its own repo's latest vX.Y.Z
+# tag, opening/updating ONE issue listing every app that is.
+#
+# The cause this was written for is fixed upstream (app-release.yml now derives
+# its runner from the caller's owner, so a personal-account app repo no longer
+# queues forever). This exists because that was only the cause we FOUND:
+# aw-app-uc-phd's entry sat at v0.1.1 while its repo reached v0.6.0 for months,
+# and the thing that made it invisible was not the runner — it was that nothing
+# anywhere compares the catalog against the repos. A disabled trigger, a
+# revoked token, or a sync PR left unmerged produces the identical silence.
+#
+# Cron is staggered off the hour (and off security-scan.yml's "45 2 * * 3") so
+# it does not pile onto minute 0 with everything else on the shared runners.
+# Weekly, not daily: a frozen catalog entry is a slow failure, and this walks
+# ~57 repos' tag lists — mass-concurrency `gh` work has hit rate limits in this
+# estate before.
+on:
+  schedule:
+    - cron: "25 5 * * 1"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  drift:
+    runs-on: [self-hosted, aw-baremetal]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python3 scripts/check_catalog_drift.py
+        env:
+          # GITHUB_TOKEN reads public repos' tags fine. A private app repo
+          # listed in the PUBLIC catalog would 404 here and be reported as
+          # "no parseable tag (skipped)" rather than as drift — silence over a
+          # false alarm, on purpose. Private apps live in the separate
+          # aw-marketplace-private catalog anyway.
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPOSITORY: ${{ github.repository }}
