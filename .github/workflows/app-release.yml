@@ -30,17 +30,73 @@ on:
     secrets:
       MARKETPLACE_SYNC_TOKEN:
         description: "PAT (repo scope) used to push/PR into the catalog repo."
-        required: true
+        # Deliberately NOT `required: true`. GitHub enforces a required
+        # workflow_call secret before any job is created, so a caller without
+        # it gets a run-level startup_failure with zero jobs and the message
+        # "Secret MARKETPLACE_SYNC_TOKEN is required, but not provided" — no
+        # log, no step, and no hint that on a personal-account repo it has to
+        # be a REPO secret because there are no org secrets to inherit. That
+        # failure mode is what stalled fredericowu/aw-app-uc-phd's catalog
+        # entry at v0.1.1 for months. Declaring it optional hands the check to
+        # the preflight step below, which fails just as hard but says what to
+        # do. Callers that already pass it are unaffected.
+        required: false
 
 jobs:
   release:
     if: ${{ !contains(github.event.head_commit.message, '[skip release]') }}
-    runs-on: [self-hosted, aw-baremetal]
+    # Runner derived from the CALLER's owner, not an input. `github.repository`
+    # resolves to the caller repo inside a called workflow — the auto-merge gate
+    # at the bottom of this file has relied on exactly that for months, so the
+    # predicate is proven rather than newly assumed. tekflox/* repos keep the
+    # byte-identical self-hosted pair they have today; a repo outside the org
+    # gets GitHub-hosted runners, because org runner groups can only be shared
+    # with repos INSIDE the org and a job targeting them from outside queues
+    # forever instead of failing. An input was rejected on this file's own
+    # stated principle (see the visibility guard below): the next
+    # personal-account app would have to remember to pass it.
+    #
+    # Every step in this job is network + Python (checkout, setup-python, pip,
+    # validate_manifest, pytest, git push, api.github.com). Nothing needs the
+    # bare-metal host. If a future step ever does, it will work for tekflox/*
+    # and fail only for personal-account callers — say so here when you add it.
+    #
+    # fromJSON is unforgiving: the inner value must be valid JSON, so the
+    # single label carries its own quotes ('"ubuntu-latest"'). A malformed
+    # expression here is a startup failure with zero jobs, which the Actions UI
+    # renders as if the workflow did not exist at all.
+    runs-on: ${{ fromJSON(startsWith(github.repository, 'tekflox/') && '["self-hosted","aw-baremetal"]' || '"ubuntu-latest"') }}
     permissions:
       contents: write
     env:
       CATALOG_REPO: ${{ inputs.catalog_repo }}
     steps:
+      # First step on purpose. Without it, a missing/empty token surfaces as a
+      # 401 from the visibility curl below, which reads as an unrelated GitHub
+      # API hiccup rather than "this repo has no credential". Fail, never skip:
+      # a silent skip reproduces the exact silence this guard exists to remove.
+      - name: Preflight — MARKETPLACE_SYNC_TOKEN must be present
+        env:
+          SYNC_TOKEN: ${{ secrets.MARKETPLACE_SYNC_TOKEN }}
+          APP_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          if [ -n "${SYNC_TOKEN:-}" ]; then
+            echo "MARKETPLACE_SYNC_TOKEN is present for ${APP_REPO}."
+            exit 0
+          fi
+          echo "::error::${APP_REPO} has no MARKETPLACE_SYNC_TOKEN, so this" \
+               "release cannot push a tag or open the catalog sync PR." \
+               "Add it as a REPO-LEVEL Actions secret on ${APP_REPO}" \
+               "(Settings > Secrets and variables > Actions > New repository" \
+               "secret). A repo outside the tekflox org has no org secrets to" \
+               "inherit, so 'secrets: inherit' alone delivers nothing." \
+               "Smallest safe shape: a fine-grained PAT scoped to" \
+               "tekflox/aw-marketplace (Contents: write, Pull requests: write)" \
+               "plus ${APP_REPO} (Contents: write). Minting it is the repo" \
+               "owner's decision, not CI's."
+          exit 1
+
       # A private app repo must never sync into the PUBLIC catalog. This is
       # not hypothetical: aw-app-crispal (a private store's WordPress, its DB
       # credentials and its MCP surface) called this workflow with no way to
