@@ -176,6 +176,9 @@ jobs:
           # can't be lazy-imported away — such an app declares it in its own
           # requirements-dev.txt, installed here if present.
           pip install -q pytest jsonschema fastapi httpx uvicorn
+          if [ -f requirements.txt ]; then
+            pip install -q -r requirements.txt
+          fi
           if [ -f requirements-dev.txt ]; then
             pip install -q -r requirements-dev.txt
           fi
