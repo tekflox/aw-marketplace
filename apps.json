@@ -1270,6 +1270,28 @@
         "memory": "~2 GB",
         "disk": "~550 MB"
       }
+    },
+    {
+      "id": "signoz-connector",
+      "name": "SigNoz Connector",
+      "description": "Forwards this workspace's OpenTelemetry traces, metrics and logs to a SigNoz you already have \u2014 a central one, or the aw-app-signoz of another workspace. One small OTel Collector container (~256 MB), no ClickHouse and no UI of its own: it receives OTLP from core and from this workspace's apps, stamps workspace.slug on everything, and ships it on with a disk-backed queue so an unreachable destination buffers instead of dropping. The destination is not configured here \u2014 it comes from Settings > Observability, which stays the single source of truth and pushes it in on save. If you want to STORE and BROWSE telemetry inside this workspace instead of forwarding it, install the full SigNoz app (aw-app-signoz) rather than this one.",
+      "repo": "tekflox/aw-app-signoz-connector",
+      "ref": "v0.2.0",
+      "version": "0.2.0",
+      "icon": "plug",
+      "category": "dev-tools",
+      "tags": [
+        "signoz",
+        "connector"
+      ],
+      "has_config": true,
+      "bootstrap": false,
+      "publisher": "TekFlox",
+      "resource_estimate": {
+        "cpu": "low",
+        "memory": "~256 MB",
+        "disk": "~200 MB"
+      }
     }
   ]
 }
