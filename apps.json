@@ -1292,6 +1292,29 @@
         "memory": "~256 MB",
         "disk": "~200 MB"
       }
+    },
+    {
+      "id": "playwright-record",
+      "name": "Playwright Recorder",
+      "description": "Record shared-browser Playwright flows as reviewable sessions with video, trace, screenshots, network and console logs, plus a self-contained report in the AW UI.",
+      "repo": "tekflox/aw-app-playwright-record",
+      "ref": "v0.2.0",
+      "version": "0.2.0",
+      "icon": "plug",
+      "category": "dev-tools",
+      "tags": [
+        "playwright",
+        "record",
+        "ffmpeg"
+      ],
+      "has_config": false,
+      "bootstrap": true,
+      "publisher": "TekFlox",
+      "resource_estimate": {
+        "cpu": "medium",
+        "memory": "medium",
+        "disk": "medium"
+      }
     }
   ]
 }
