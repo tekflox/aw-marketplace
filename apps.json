@@ -300,8 +300,8 @@
       "name": "Agents Platform Runners",
       "description": "Depends on the code-agent-clis app (claude/codex/copilot/cursor-agent already installed at /usr/local/bin, single source of truth) so this workspace's agent-CLI runners are what agents-platform-multitenant's agent sessions use, and contributes the ported \"aw-agents\" MCP (agent_mcp.py) so agents-platform is controllable as MCP tools from this workspace.",
       "repo": "tekflox/aw-app-agents-platform-runners",
-      "ref": "v0.165.0",
-      "version": "0.165.0",
+      "ref": "v0.166.0",
+      "version": "0.166.0",
       "icon": "plug",
       "category": "dev-tools",
       "tags": [
@@ -1298,8 +1298,8 @@
       "name": "Playwright Recorder",
       "description": "Record shared-browser Playwright flows as reviewable sessions with video, trace, screenshots, network and console logs, plus a self-contained report in the AW UI.",
       "repo": "tekflox/aw-app-playwright-record",
-      "ref": "v0.2.3",
-      "version": "0.2.3",
+      "ref": "v0.2.4",
+      "version": "0.2.4",
       "icon": "plug",
       "category": "dev-tools",
       "tags": [
