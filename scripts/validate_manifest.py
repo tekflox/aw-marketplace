@@ -137,6 +137,13 @@ for skill in contributes.get("skills", []) or []:
     if not (APP_ROOT / skill["path"]).is_file():
         fail(f"skill file missing: {skill['path']}")
 
+knowledge = contributes.get("knowledge")
+if knowledge:
+    knowledge_path = knowledge["path"]
+    if not (APP_ROOT / knowledge_path).is_dir():
+        fail(f"knowledge path missing: {knowledge_path} — contributes.knowledge.path "
+             f"must be a directory in the repo")
+
 # contributes.agents may point a system prompt / group instructions at a file
 # in the package. A missing one is the quietest failure of the lot: the
 # workspace drops that single field with a log line and seeds the agent

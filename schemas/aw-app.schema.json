@@ -266,6 +266,18 @@
             }
           }
         },
+        "knowledge": {
+          "type": "object",
+          "required": [
+            "path"
+          ],
+          "properties": {
+            "path": {
+              "type": "string",
+              "description": "Directory of docs, relative to the app package dir, mirrored into knowledge_base/apps/<app-id>/docs/ on activate."
+            }
+          }
+        },
         "settings_panels": {
           "type": "array"
         },
