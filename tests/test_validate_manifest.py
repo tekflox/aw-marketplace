@@ -65,3 +65,35 @@ def test_unknown_widget_still_fails(tmp_path):
     result = run_validate(manifest_path)
     assert result.returncode == 1
     assert "not_a_real_widget" in result.stderr
+
+
+def make_knowledge_app(tmp_path, knowledge_path):
+    manifest = {
+        "manifest_version": 1,
+        "id": "fixture-app",
+        "name": "Fixture App",
+        "version": "0.1.0",
+        "tier": "inprocess",
+        "runtime": {"python": ">=3.11", "entrypoint": "fixture:Plugin"},
+        "permissions": [],
+        "contributes": {
+            "knowledge": {"path": knowledge_path},
+        },
+    }
+    manifest_path = tmp_path / "aw-app.json"
+    manifest_path.write_text(json.dumps(manifest))
+    return manifest_path
+
+
+def test_knowledge_path_that_exists_as_a_directory_passes(tmp_path):
+    (tmp_path / "docs").mkdir()
+    manifest_path = make_knowledge_app(tmp_path, "docs")
+    result = run_validate(manifest_path)
+    assert result.returncode == 0, result.stderr
+
+
+def test_knowledge_path_that_is_missing_fails_naming_the_path(tmp_path):
+    manifest_path = make_knowledge_app(tmp_path, "docs")
+    result = run_validate(manifest_path)
+    assert result.returncode == 1
+    assert "docs" in result.stderr
