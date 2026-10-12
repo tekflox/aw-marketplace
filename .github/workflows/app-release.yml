@@ -65,7 +65,7 @@ jobs:
     # single label carries its own quotes ('"ubuntu-latest"'). A malformed
     # expression here is a startup failure with zero jobs, which the Actions UI
     # renders as if the workflow did not exist at all.
-    runs-on: ${{ fromJSON(startsWith(github.repository, 'tekflox/') && '["self-hosted","aw-baremetal"]' || '"ubuntu-latest"') }}
+    runs-on: ${{ fromJSON(startsWith(github.repository, 'tekflox/') && '["self-hosted","aw-baremetal"]' || '"ubuntu-24.04"') }}
     permissions:
       contents: write
     env:
@@ -137,13 +137,13 @@ jobs:
           echo "${APP_REPO} is public — publishing to the public catalog is fine."
 
       - name: Checkout app repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
           token: ${{ secrets.MARKETPLACE_SYNC_TOKEN }}
 
       - name: Checkout aw-marketplace scripts + schema
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: tekflox/aw-marketplace
           path: _marketplace
@@ -153,7 +153,7 @@ jobs:
       # catalog is the thing this run COMMITS to, the scripts are what it
       # runs, and conflating them is what made the target un-overridable.
       - name: Checkout the target catalog
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: ${{ inputs.catalog_repo }}
           path: _catalog
