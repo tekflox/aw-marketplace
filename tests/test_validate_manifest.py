@@ -97,3 +97,102 @@ def test_knowledge_path_that_is_missing_fails_naming_the_path(tmp_path):
     result = run_validate(manifest_path)
     assert result.returncode == 1
     assert "docs" in result.stderr
+
+
+def make_indexing_app(tmp_path, indexing_entries):
+    manifest = {
+        "manifest_version": 1,
+        "id": "fixture-app",
+        "name": "Fixture App",
+        "version": "0.1.0",
+        "tier": "inprocess",
+        "runtime": {"python": ">=3.11", "entrypoint": "fixture:Plugin"},
+        "permissions": [],
+        "contributes": {
+            "mcp": {"indexing": indexing_entries},
+        },
+    }
+    manifest_path = tmp_path / "aw-app.json"
+    manifest_path.write_text(json.dumps(manifest))
+    return manifest_path
+
+
+def test_mcp_indexing_not_declared_still_validates(tmp_path):
+    # Every app installed today has no 'indexing' key at all.
+    manifest_path = tmp_path / "aw-app.json"
+    manifest_path.write_text(json.dumps({
+        "manifest_version": 1,
+        "id": "fixture-app",
+        "name": "Fixture App",
+        "version": "0.1.0",
+        "tier": "inprocess",
+        "runtime": {"python": ">=3.11", "entrypoint": "fixture:Plugin"},
+        "permissions": [],
+        "contributes": {},
+    }))
+    result = run_validate(manifest_path)
+    assert result.returncode == 0, result.stderr
+
+
+def test_mcp_indexing_well_formed_restriction_passes(tmp_path):
+    manifest_path = make_indexing_app(tmp_path, [
+        {"tool": "search_graph", "call": False, "output": True,
+         "reason": "arguments carry a free-text query that may include PII"},
+    ])
+    result = run_validate(manifest_path)
+    assert result.returncode == 0, result.stderr
+
+
+def test_mcp_indexing_restriction_missing_reason_fails(tmp_path):
+    manifest_path = make_indexing_app(tmp_path, [
+        {"tool": "search_graph", "call": False, "output": True},
+    ])
+    result = run_validate(manifest_path)
+    assert result.returncode == 1
+    assert "reason" in result.stderr
+
+
+def test_mcp_indexing_floor_tool_declared_indexable_fails(tmp_path):
+    manifest_path = make_indexing_app(tmp_path, [
+        {"tool": "write_secret", "call": True, "output": False,
+         "reason": "trying to lift the floor"},
+    ])
+    result = run_validate(manifest_path)
+    assert result.returncode == 1
+    assert "hard floor" in result.stderr
+
+
+def test_mcp_indexing_floor_tool_both_axes_false_passes(tmp_path):
+    manifest_path = make_indexing_app(tmp_path, [
+        {"tool": "write_secret", "call": False, "output": False,
+         "reason": "redundant under the floor"},
+    ])
+    result = run_validate(manifest_path)
+    assert result.returncode == 0, result.stderr
+
+
+def test_mcp_indexing_gateway_prefixed_tool_name_fails(tmp_path):
+    manifest_path = make_indexing_app(tmp_path, [
+        {"tool": "mcp__aw-gateway__aw__aw_secrets__write_secret",
+         "call": False, "output": False, "reason": "x"},
+    ])
+    result = run_validate(manifest_path)
+    assert result.returncode == 1
+    assert "bare terminal segment" in result.stderr
+
+
+def test_mcp_indexing_duplicate_tool_fails(tmp_path):
+    manifest_path = make_indexing_app(tmp_path, [
+        {"tool": "search_graph", "call": True, "output": True},
+        {"tool": "search_graph", "call": False, "output": False, "reason": "x"},
+    ])
+    result = run_validate(manifest_path)
+    assert result.returncode == 1
+    assert "more than once" in result.stderr
+
+
+def test_mcp_indexing_entry_missing_required_schema_keys_fails(tmp_path):
+    # The JSON schema itself enforces tool/call/output presence and types.
+    manifest_path = make_indexing_app(tmp_path, [{"tool": "search_graph", "call": True}])
+    result = run_validate(manifest_path)
+    assert result.returncode == 1

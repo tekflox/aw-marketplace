@@ -305,6 +305,35 @@
             },
             "reload_on_save": {
               "type": "boolean"
+            },
+            "indexing": {
+              "type": "array",
+              "description": "Per-tool exec-indexing opt-outs for the tools this app contributes (docs/design/exec-index-per-tool-policy.md). Blacklist model: a tool with no entry here is indexable on both axes. `tool` MUST be a bare terminal segment (no '__' or '.') \u2014 validate_manifest.py additionally rejects a duplicate tool, a 'reason' missing when either axis is false, and either axis set true for a secret-store tool (read_secret/collect_secret/write_secret/delete_secret), which is a hard floor no manifest can lift.",
+              "items": {
+                "type": "object",
+                "required": [
+                  "tool",
+                  "call",
+                  "output"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "tool": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "call": {
+                    "type": "boolean"
+                  },
+                  "output": {
+                    "type": "boolean"
+                  },
+                  "reason": {
+                    "type": "string",
+                    "description": "Required when 'call' or 'output' is false."
+                  }
+                }
+              }
             }
           }
         },

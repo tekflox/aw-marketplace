@@ -144,6 +144,42 @@ if knowledge:
         fail(f"knowledge path missing: {knowledge_path} — contributes.knowledge.path "
              f"must be a directory in the repo")
 
+# contributes.mcp.indexing (docs/design/exec-index-per-tool-policy.md §4) —
+# the JSON schema already enforces the required keys and booleans; what it
+# cannot express is enforced here, same split as the widget/settings checks
+# above. This is the EARLIEST point a floor-lying manifest can be caught —
+# release time — which is the whole point of checking it here rather than
+# only at install (src/apps/manifest.py's `_validate_mcp_indexing` enforces
+# the identical rules a second time, at install/load, for apps that never
+# go through a marketplace release).
+MCP_INDEXING_FLOOR_TOOLS = {
+    "read_secret",
+    "collect_secret",
+    "write_secret",
+    "delete_secret",
+}
+
+_seen_indexing_tools: set[str] = set()
+for entry in (contributes.get("mcp") or {}).get("indexing", []) or []:
+    tool = entry.get("tool", "")
+    if "__" in tool or "." in tool:
+        fail(f"contributes.mcp.indexing tool {tool!r} must be a bare terminal "
+             f"segment — no '__' or '.'. A gateway-prefixed spelling here "
+             f"would never match the resolution grammar that consults it.")
+    if tool in _seen_indexing_tools:
+        fail(f"contributes.mcp.indexing declares {tool!r} more than once")
+    _seen_indexing_tools.add(tool)
+    call, output = entry.get("call"), entry.get("output")
+    if tool in MCP_INDEXING_FLOOR_TOOLS and (call or output):
+        fail(f"contributes.mcp.indexing[{tool!r}] sets an axis true for a "
+             f"secret-store tool — read_secret, collect_secret, write_secret "
+             f"and delete_secret are a hard floor no manifest can lift.")
+    reason = entry.get("reason")
+    if (not call or not output) and not (isinstance(reason, str) and reason.strip()):
+        fail(f"contributes.mcp.indexing[{tool!r}] restricts an axis but has "
+             f"no non-empty 'reason' — an opt-out nobody can review is the "
+             f"stale-registry rot this field exists to avoid.")
+
 # contributes.agents may point a system prompt / group instructions at a file
 # in the package. A missing one is the quietest failure of the lot: the
 # workspace drops that single field with a log line and seeds the agent
