@@ -1315,6 +1315,27 @@
         "memory": "medium",
         "disk": "medium"
       }
+    },
+    {
+      "id": "neo4j",
+      "name": "Neo4j Graph Database",
+      "description": "A dedicated Neo4j graph database your other apps can share. Install it once and any app that declares it as a dependency gets a durable graph store on the workspace's own network \u2014 no setup beyond a password.",
+      "repo": "tekflox/aw-app-neo4j",
+      "ref": "v0.2.0",
+      "version": "0.2.0",
+      "icon": "plug",
+      "category": "dev-tools",
+      "tags": [
+        "neo4j"
+      ],
+      "has_config": true,
+      "bootstrap": false,
+      "publisher": "TekFlox",
+      "resource_estimate": {
+        "cpu": "medium",
+        "memory": "~1 GB",
+        "disk": "medium"
+      }
     }
   ]
 }
