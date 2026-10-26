@@ -1336,6 +1336,27 @@
         "memory": "~1 GB",
         "disk": "medium"
       }
+    },
+    {
+      "id": "marimo",
+      "name": "Marimo",
+      "description": "A reactive Python notebook in your workspace. Open it from the Apps grid and start writing cells \u2014 change one and everything that depends on it re-runs by itself, so a notebook can never show a stale result. Notebooks are plain .py files kept on the workspace disk, so they survive restarts, updates and reinstalls, and nothing is exposed outside the workspace.",
+      "repo": "tekflox/aw-app-marimo",
+      "ref": "v0.2.0",
+      "version": "0.2.0",
+      "icon": "plug",
+      "category": "dev-tools",
+      "tags": [
+        "marimo"
+      ],
+      "has_config": true,
+      "bootstrap": false,
+      "publisher": "TekFlox",
+      "resource_estimate": {
+        "cpu": "medium",
+        "memory": "~500 MB",
+        "disk": "~800 MB"
+      }
     }
   ]
 }
