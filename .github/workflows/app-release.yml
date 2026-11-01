@@ -41,6 +41,19 @@ on:
         # the preflight step below, which fails just as hard but says what to
         # do. Callers that already pass it are unaffected.
         required: false
+      SKILLS_SYNC_TOKEN:
+        description: >-
+          Shared secret used to POST an app's contributes.skills content to
+          aw-skills (https://skills.aw.tekflox.com) on release. Same
+          distribution model as MARKETPLACE_SYNC_TOKEN above: an org-level
+          secret for tekflox/* repos, a manual repo-level secret for anyone
+          else. Also deliberately NOT required for the same reason — a
+          caller with no `contributes.skills` to sync has no reason to carry
+          this secret at all, and a required-but-absent workflow_call secret
+          is a zero-job startup_failure rather than a readable error. The
+          `sync-skills` job below does its own check and fails loud only
+          when an app actually declares skills with nothing to auth with.
+        required: false
 
 jobs:
   release:
@@ -70,6 +83,9 @@ jobs:
       contents: write
     env:
       CATALOG_REPO: ${{ inputs.catalog_repo }}
+    outputs:
+      new_tag: ${{ steps.bump.outputs.new_tag }}
+      new_version: ${{ steps.bump.outputs.new_version }}
     steps:
       # First step on purpose. Without it, a missing/empty token surfaces as a
       # 401 from the visibility curl below, which reads as an unrelated GitHub
@@ -449,4 +465,157 @@ jobs:
                   "merge_method": "squash",
               })
               print(f"merged=true pr_number={pr['number']}")
+          PY
+
+  # Separate job, not a step inside `release`, so that this app's own
+  # contributes.skills sync is not gated on the catalog-PR mechanics above
+  # (the sync/auto-merge steps) — it only needs the version bump to have
+  # happened. `needs: release` does mean it is skipped if `release` itself
+  # fails for any reason (tests, bump, catalog sync, ...) — an app whose
+  # release attempt failed has nothing new to sync anyway, and the next
+  # green run (retry or next push) carries this job along with it.
+  sync-skills:
+    needs: release
+    runs-on: ${{ fromJSON(startsWith(github.repository, 'tekflox/') && '["self-hosted","aw-baremetal"]' || '"ubuntu-24.04"') }}
+    permissions:
+      contents: read
+    env:
+      SKILLS_SYNC_URL: https://skills.aw.tekflox.com/api/sync/marketplace
+    steps:
+      # Checked out at the tag `release` just pushed, so aw-app.json carries
+      # the bumped version and the skill files on disk match what this
+      # release actually ships — not whatever HEAD drifted to meanwhile.
+      - name: Checkout app repo at the released tag
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.release.outputs.new_tag }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Sync contributes.skills to aw-skills
+        env:
+          SKILLS_SYNC_TOKEN: ${{ secrets.SKILLS_SYNC_TOKEN }}
+          APP_REPO: ${{ github.repository }}
+          APP_VERSION: ${{ needs.release.outputs.new_version }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import base64
+          import hashlib
+          import json
+          import os
+          import sys
+          import urllib.error
+          import urllib.request
+
+          with open("aw-app.json") as f:
+              manifest = json.load(f)
+
+          app_id = manifest["id"]
+          app_version = os.environ["APP_VERSION"]
+          skills = (manifest.get("contributes") or {}).get("skills") or []
+
+          if not skills:
+              print("sync-skills: no contributes.skills entries — nothing to sync.")
+              sys.exit(0)
+
+          token = os.environ.get("SKILLS_SYNC_TOKEN", "")
+          if not token:
+              print(
+                  f"::error::{os.environ['APP_REPO']} declares contributes.skills "
+                  "but has no SKILLS_SYNC_TOKEN secret, so this release cannot sync "
+                  "it to aw-skills. Add it as an Actions secret (org-level on "
+                  "tekflox/*, repo-level elsewhere) — same distribution model as "
+                  "MARKETPLACE_SYNC_TOKEN."
+              )
+              sys.exit(1)
+
+          url = os.environ["SKILLS_SYNC_URL"]
+
+
+          def hash_dir(dir_path: str) -> str:
+              # MUST stay byte-identical to aw-workspace's own
+              # src/apps/skills.py:144 _hash_dir — this is the hash the
+              # service compares a release's dir_hash against.
+              hasher = hashlib.sha256()
+              for root, dirs, files in os.walk(dir_path):
+                  dirs.sort()
+                  for name in sorted(files):
+                      full = os.path.join(root, name)
+                      hasher.update(os.path.relpath(full, dir_path).encode())
+                      with open(full, "rb") as fh:
+                          hasher.update(fh.read())
+              return hasher.hexdigest()
+
+
+          def collect_files(dir_path: str) -> dict:
+              out = {}
+              for root, dirs, files in os.walk(dir_path):
+                  dirs.sort()
+                  for name in sorted(files):
+                      full = os.path.join(root, name)
+                      relpath = os.path.relpath(full, dir_path)
+                      with open(full, "rb") as fh:
+                          out[relpath] = base64.b64encode(fh.read()).decode("ascii")
+              return out
+
+
+          failed = False
+          for entry in skills:
+              skill_slug = entry["id"]
+              skill_dir = os.path.dirname(entry["path"])
+              if not os.path.isdir(skill_dir):
+                  print(
+                      f"::error::skill {skill_slug!r} declares path "
+                      f"{entry['path']!r} but {skill_dir!r} does not exist"
+                  )
+                  failed = True
+                  continue
+
+              payload = {
+                  "app_id": app_id,
+                  "app_version": app_version,
+                  "skill_slug": skill_slug,
+                  "files": collect_files(skill_dir),
+                  "dir_hash": hash_dir(skill_dir),
+              }
+              req = urllib.request.Request(
+                  url,
+                  data=json.dumps(payload).encode(),
+                  method="POST",
+                  headers={
+                      "Authorization": f"Bearer {token}",
+                      "Content-Type": "application/json",
+                  },
+              )
+              try:
+                  with urllib.request.urlopen(req) as resp:
+                      print(
+                          f"sync-skills: {skill_slug} -> "
+                          f"{resp.status} {resp.read().decode()}"
+                      )
+              except urllib.error.HTTPError as exc:
+                  detail = exc.read().decode(errors="replace")
+                  if exc.code == 409:
+                      print(
+                          f"::error::skill {skill_slug!r} is owned by a "
+                          f"different app — aw-skills refused the sync: {detail}"
+                      )
+                  else:
+                      print(
+                          f"::error::sync of skill {skill_slug!r} failed with "
+                          f"HTTP {exc.code}: {detail}"
+                      )
+                  failed = True
+              except urllib.error.URLError as exc:
+                  print(
+                      f"::error::sync of skill {skill_slug!r} failed to reach "
+                      f"{url}: {exc}"
+                  )
+                  failed = True
+
+          if failed:
+              sys.exit(1)
           PY
