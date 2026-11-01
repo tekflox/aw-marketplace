@@ -594,7 +594,14 @@ jobs:
                   data=json.dumps(payload).encode(),
                   method="POST",
                   headers={
-                      "Authorization": f"Bearer {token}",
+                      # The contract header for this endpoint is
+                      # `x-skills-sync-token`, NOT Authorization: Bearer —
+                      # on aw-skills, Bearer already means "aw_id_jwt
+                      # identity JWT" on every other route, so a static
+                      # service secret there would give one header two
+                      # meanings. See fredericowu/aw-skills
+                      # docs/DESIGN.md §8.1.
+                      "x-skills-sync-token": token,
                       "Content-Type": "application/json",
                   },
               )
