@@ -523,14 +523,22 @@ jobs:
 
           token = os.environ.get("SKILLS_SYNC_TOKEN", "")
           if not token:
+              # The aw-skills backend dependency isn't provisioned in this
+              # environment yet (see aw-skills Fase 3c) — that's not a sync
+              # failure, so warn and let the release pass. Failing the whole
+              # release on an unprovisioned dependency turns every one of the
+              # ~45 app repos that declare contributes.skills red at once and
+              # trains everyone to ignore red on app-release.yml.
               print(
-                  f"::error::{os.environ['APP_REPO']} declares contributes.skills "
-                  "but has no SKILLS_SYNC_TOKEN secret, so this release cannot sync "
-                  "it to aw-skills. Add it as an Actions secret (org-level on "
-                  "tekflox/*, repo-level elsewhere) — same distribution model as "
+                  f"::warning::{os.environ['APP_REPO']} declares contributes.skills "
+                  "but has no SKILLS_SYNC_TOKEN secret yet, so this release skips "
+                  "the aw-skills sync. Not a failure — the aw-skills dependency is "
+                  "still being provisioned (see aw-skills Fase 3c). Once it lands, "
+                  "add this as an Actions secret (org-level on tekflox/*, "
+                  "repo-level elsewhere) — same distribution model as "
                   "MARKETPLACE_SYNC_TOKEN."
               )
-              sys.exit(1)
+              sys.exit(0)
 
           url = os.environ["SKILLS_SYNC_URL"]
 
@@ -603,18 +611,31 @@ jobs:
                           f"::error::skill {skill_slug!r} is owned by a "
                           f"different app — aw-skills refused the sync: {detail}"
                       )
+                      failed = True
+                  elif exc.code == 501:
+                      # Ingest is still a stub on the aw-skills side (Fase
+                      # 3c) — dependency not provisioned yet, not a sync
+                      # failure.
+                      print(
+                          f"::warning::aw-skills does not implement ingest yet "
+                          f"(HTTP 501) — skipping sync of skill {skill_slug!r}. "
+                          "Not a failure, see aw-skills Fase 3c."
+                      )
                   else:
                       print(
                           f"::error::sync of skill {skill_slug!r} failed with "
                           f"HTTP {exc.code}: {detail}"
                       )
-                  failed = True
+                      failed = True
               except urllib.error.URLError as exc:
+                  # Host unreachable — DNS, TLS not issued yet, connection
+                  # refused. The aw-skills dependency isn't provisioned in
+                  # this environment yet (Fase 3c), not a sync failure.
                   print(
-                      f"::error::sync of skill {skill_slug!r} failed to reach "
-                      f"{url}: {exc}"
+                      f"::warning::could not reach {url} to sync skill "
+                      f"{skill_slug!r}: {exc}. Not a failure — aw-skills is "
+                      "not provisioned here yet, see aw-skills Fase 3c."
                   )
-                  failed = True
 
           if failed:
               sys.exit(1)
