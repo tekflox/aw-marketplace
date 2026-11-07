@@ -144,6 +144,13 @@ if knowledge:
         fail(f"knowledge path missing: {knowledge_path} — contributes.knowledge.path "
              f"must be a directory in the repo")
 
+agents_md = contributes.get("agents_md")
+if agents_md:
+    agents_md_path = agents_md["path"]
+    if not (APP_ROOT / agents_md_path).is_file():
+        fail(f"agents_md path missing: {agents_md_path} — contributes.agents_md.path "
+             f"must be a file in the repo")
+
 # contributes.mcp.indexing (docs/design/exec-index-per-tool-policy.md §4) —
 # the JSON schema already enforces the required keys and booleans; what it
 # cannot express is enforced here, same split as the widget/settings checks
