@@ -278,6 +278,22 @@
             }
           }
         },
+        "agents_md": {
+          "type": "object",
+          "required": [
+            "path"
+          ],
+          "properties": {
+            "path": {
+              "type": "string",
+              "description": "Markdown file, relative to the app package dir, injected as this app's block into AGENTS.md's managed region on install (removed on uninstall)."
+            },
+            "title": {
+              "type": "string",
+              "description": "Heading shown above the block (\"## <title> (app: <app-id>)\"). Defaults to the app's name."
+            }
+          }
+        },
         "settings_panels": {
           "type": "array"
         },
