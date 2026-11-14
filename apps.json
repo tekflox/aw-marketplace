@@ -1421,6 +1421,28 @@
         "memory": "low",
         "disk": "low"
       }
+    },
+    {
+      "id": "workspace-agent",
+      "name": "Workspace Agent",
+      "description": "Browse every agent this workspace can dispatch, see who is running right now, and open sessions without leaving the workspace \u2014 a command-center view over your Agents Platform fleet.",
+      "repo": "tekflox/aw-app-workspace-agent",
+      "ref": "v0.2.0",
+      "version": "0.2.0",
+      "icon": "plug",
+      "category": "dev-tools",
+      "tags": [
+        "workspace",
+        "agent"
+      ],
+      "has_config": true,
+      "bootstrap": false,
+      "publisher": "TekFlox",
+      "resource_estimate": {
+        "cpu": "low",
+        "memory": "low",
+        "disk": "low"
+      }
     }
   ]
 }
