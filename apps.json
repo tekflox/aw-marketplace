@@ -1400,6 +1400,27 @@
         "memory": "low",
         "disk": "low"
       }
+    },
+    {
+      "id": "terminal",
+      "name": "Terminal",
+      "description": "The Terminal launcher in the workspace nav: open a new shell, see which terminals are running, jump into one or close it. UI only \u2014 the PTY shell itself (the terminal window chrome, /api/terminals, /ws/terminal/*) stays core-owned per the 2026-08-03 decoupling decision; this app owns the menu that drives it. Extracted out of aw-app-code-agent-clis so a plain terminal no longer lives under \"Agents\".",
+      "repo": "tekflox/aw-app-terminal",
+      "ref": "v0.2.0",
+      "version": "0.2.0",
+      "icon": "plug",
+      "category": "dev-tools",
+      "tags": [
+        "terminal"
+      ],
+      "has_config": false,
+      "bootstrap": false,
+      "publisher": "TekFlox",
+      "resource_estimate": {
+        "cpu": "low",
+        "memory": "low",
+        "disk": "low"
+      }
     }
   ]
 }
