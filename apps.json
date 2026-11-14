@@ -1427,8 +1427,8 @@
       "name": "Workspace Agent",
       "description": "Browse every agent this workspace can dispatch, see who is running right now, and open sessions without leaving the workspace \u2014 a command-center view over your Agents Platform fleet.",
       "repo": "tekflox/aw-app-workspace-agent",
-      "ref": "v0.2.1",
-      "version": "0.2.1",
+      "ref": "v0.2.2",
+      "version": "0.2.2",
       "icon": "plug",
       "category": "dev-tools",
       "tags": [
